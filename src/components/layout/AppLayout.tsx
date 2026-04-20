@@ -1,6 +1,8 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
+import ToastHost from '../ui/ToastHost';
+import TopUpModal from '../sections/TopUpModal';
 
 export default function AppLayout() {
   return (
@@ -10,6 +12,8 @@ export default function AppLayout() {
         <Outlet />
       </main>
       <BottomNav />
+      <ToastHost />
+      <TopUpModal />
     </div>
   );
 }

@@ -1,16 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import Button from '../components/ui/Button';
+import { useAuthStore } from '../stores/authStore';
 
 export default function LoginPage() {
   const [tab, setTab] = useState<'login' | 'register'>('login');
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const login = useAuthStore((s) => s.login);
+  const register = useAuthStore((s) => s.register);
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const loading = useAuthStore((s) => s.loading);
+  const error = useAuthStore((s) => s.error);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Wait for persist rehydration so we don't redirect before auth is restored.
+  const [hydrated, setHydrated] = useState(() => useAuthStore.persist.hasHydrated());
+  useEffect(() => useAuthStore.persist.onFinishHydration(() => setHydrated(true)), []);
+
+  useEffect(() => {
+    if (hydrated && isAuthenticated) navigate('/dashboard', { replace: true });
+  }, [hydrated, isAuthenticated, navigate]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate('/dashboard');
+    if (tab === 'login') {
+      await login(email, password);
+    } else {
+      await register(name, email, password);
+    }
   };
 
   return (
@@ -69,6 +90,8 @@ export default function LoginPage() {
                 <input
                   id="name"
                   type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                   placeholder="John Doe"
                   className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 />
@@ -81,6 +104,8 @@ export default function LoginPage() {
               <input
                 id="email"
                 type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="john@university.edu"
                 className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               />
@@ -100,6 +125,8 @@ export default function LoginPage() {
                 <input
                   id="password"
                   type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Enter your password"
                   className="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-10"
                 />
@@ -114,8 +141,11 @@ export default function LoginPage() {
               </div>
             </div>
 
-            <Button type="submit" fullWidth size="lg">
-              {tab === 'login' ? 'Continue to Dashboard' : 'Create Account'}
+            {error && (
+              <p className="text-sm text-red-600" role="alert">{error}</p>
+            )}
+            <Button type="submit" fullWidth size="lg" disabled={loading}>
+              {loading ? 'Please wait...' : tab === 'login' ? 'Continue to Dashboard' : 'Create Account'}
             </Button>
           </form>
 

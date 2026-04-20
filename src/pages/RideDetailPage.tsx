@@ -1,10 +1,21 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Clock, MapPin, Zap, Bike, Star } from 'lucide-react';
-import { rideHistory } from '../mock/data';
+import { ArrowLeft, Clock, MapPin, Zap, Bike } from 'lucide-react';
+import { useRideHistoryStore } from '../stores/rideHistoryStore';
+import RatingStars from '../components/ui/RatingStars';
 
 export default function RideDetailPage() {
   const { id } = useParams();
-  const ride = rideHistory.find((r) => r.id === id) || rideHistory[0];
+  const rides = useRideHistoryStore((s) => s.rides);
+  const ride = rides.find((r) => r.id === id);
+
+  if (!ride) {
+    return (
+      <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
+        <p className="text-sm text-slate-500">Ride not found.</p>
+        <Link to="/history" className="text-sm text-primary hover:underline">Back to history</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
@@ -128,15 +139,7 @@ export default function RideDetailPage() {
       {/* Rating */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
         <h3 className="font-semibold text-slate-900 mb-3">Your Rating</h3>
-        <div className="flex gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              size={24}
-              className={i < ride.rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200'}
-            />
-          ))}
-        </div>
+        <RatingStars value={ride.rating} size={24} />
       </div>
     </div>
   );

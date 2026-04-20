@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {
   ChevronRight,
   User,
@@ -15,9 +15,12 @@ import {
   Bike,
   Leaf,
 } from 'lucide-react';
-import { currentUser, userStats } from '../mock/data';
+import { currentUser as fallbackUser, userStats } from '../mock/data';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
+import { useAuthStore } from '../stores/authStore';
+import ProgressBar from '../components/ui/ProgressBar';
+import IconTile from '../components/ui/IconTile';
 
 const accountSettings = [
   { icon: User, label: 'Personal Information' },
@@ -39,6 +42,16 @@ const support = [
 ];
 
 export default function ProfilePage() {
+  const storeUser = useAuthStore((s) => s.user);
+  const logout = useAuthStore((s) => s.logout);
+  const navigate = useNavigate();
+  const currentUser = storeUser ?? fallbackUser;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login', { replace: true });
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-4xl mx-auto">
       <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">Profile</h1>
@@ -75,11 +88,14 @@ export default function ProfilePage() {
 
             <div className="mt-4 space-y-2">
               <Button fullWidth variant="outline">Edit Profile</Button>
-              <Link to="/login">
-                <Button fullWidth variant="ghost" className="text-red-500 hover:bg-red-50 hover:text-red-600">
-                  <LogOut size={16} className="mr-2" /> Log Out
-                </Button>
-              </Link>
+              <Button
+                fullWidth
+                variant="ghost"
+                className="text-red-500 hover:bg-red-50 hover:text-red-600"
+                onClick={handleLogout}
+              >
+                <LogOut size={16} className="mr-2" /> Log Out
+              </Button>
             </div>
           </div>
 
@@ -95,18 +111,14 @@ export default function ProfilePage() {
                   <span className="text-slate-600">CO2 Saved</span>
                   <span className="font-semibold text-slate-900">{userStats.co2Saved}</span>
                 </div>
-                <div className="w-full bg-green-200 rounded-full h-2">
-                  <div className="bg-primary rounded-full h-2 w-[71%]" />
-                </div>
+                <ProgressBar value={71} track="green" height="md" />
               </div>
               <div>
                 <div className="flex items-center justify-between text-sm mb-1">
                   <span className="text-slate-600">Green Rides</span>
                   <span className="font-semibold text-slate-900">47 / 50</span>
                 </div>
-                <div className="w-full bg-green-200 rounded-full h-2">
-                  <div className="bg-primary rounded-full h-2 w-[94%]" />
-                </div>
+                <ProgressBar value={94} track="green" height="md" />
               </div>
             </div>
           </div>
@@ -124,9 +136,9 @@ export default function ProfilePage() {
                   className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+                    <IconTile tone="slate">
                       <item.icon size={18} className="text-slate-600" />
-                    </div>
+                    </IconTile>
                     <span className="text-sm font-medium text-slate-700">{item.label}</span>
                   </div>
                   <ChevronRight size={16} className="text-slate-300" />
@@ -145,9 +157,9 @@ export default function ProfilePage() {
                   className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+                    <IconTile tone="slate">
                       <item.icon size={18} className="text-slate-600" />
-                    </div>
+                    </IconTile>
                     <span className="text-sm font-medium text-slate-700">{item.label}</span>
                   </div>
                   <ChevronRight size={16} className="text-slate-300" />
@@ -166,9 +178,9 @@ export default function ProfilePage() {
                   className="w-full flex items-center justify-between p-3 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-slate-100 flex items-center justify-center">
+                    <IconTile tone="slate">
                       <item.icon size={18} className="text-slate-600" />
-                    </div>
+                    </IconTile>
                     <span className="text-sm font-medium text-slate-700">{item.label}</span>
                   </div>
                   <ChevronRight size={16} className="text-slate-300" />

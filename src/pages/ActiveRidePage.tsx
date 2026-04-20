@@ -1,103 +1,60 @@
-import { Link } from 'react-router-dom';
-import { Battery, MapPin, Clock, Gauge, Navigation } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
-import MapPlaceholder from '../components/MapPlaceholder';
+import RideTimerCard from '../components/sections/RideTimerCard';
+import ActiveRideScooterCard from '../components/sections/ActiveRideScooterCard';
+import RideMapCard from '../components/sections/RideMapCard';
+import { useActiveRideStore } from '../stores/activeRideStore';
+import { useUIStore } from '../stores/uiStore';
 
 export default function ActiveRidePage() {
+  const ride = useActiveRideStore((s) => s.activeRide);
+  const endRide = useActiveRideStore((s) => s.endRide);
+  const loading = useActiveRideStore((s) => s.loading);
+  const showToast = useUIStore((s) => s.showToast);
+  const navigate = useNavigate();
+
+  // Wait for persist rehydration before deciding to redirect — otherwise the
+  // first render sees null and bounces the user off a valid deep-linked ride.
+  const [hydrated, setHydrated] = useState(() => useActiveRideStore.persist.hasHydrated());
+  useEffect(() => useActiveRideStore.persist.onFinishHydration(() => setHydrated(true)), []);
+
+  useEffect(() => {
+    if (hydrated && !ride) navigate('/map', { replace: true });
+  }, [hydrated, ride, navigate]);
+
+  if (!hydrated) return null;
+  if (!ride) return null;
+
+  const handleEndRide = async () => {
+    const finished = await endRide();
+    if (finished) {
+      showToast(`Ride ended. ${finished.cost} charged`, 'success');
+      navigate('/ride/complete');
+    }
+  };
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-6">
-        {/* Ride Info */}
         <div className="space-y-6">
-          {/* Status */}
           <div className="flex items-center justify-between">
             <Badge variant="success" className="animate-pulse text-sm px-4 py-1.5">
               RIDE ACTIVE
             </Badge>
-            <span className="text-xs text-slate-500">Scooter SC-1042</span>
+            <span className="text-xs text-slate-500">Scooter {ride.scooterId}</span>
           </div>
 
-          {/* Timer */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center">
-            <p className="text-xs text-slate-500 uppercase tracking-wide mb-2">Ride Duration</p>
-            <p className="text-5xl sm:text-6xl font-bold text-slate-900 font-mono tracking-wider mb-2">
-              00:08:24
-            </p>
-            <p className="text-sm text-slate-500">
-              Current Cost: <span className="text-lg font-bold text-primary">$1.59</span>
-            </p>
-          </div>
+          <RideTimerCard />
+          <ActiveRideScooterCard />
 
-          {/* Scooter Info */}
-          <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="font-semibold text-slate-900">Spark X1</h3>
-                <p className="text-xs text-slate-500">X1 Pro · SC-1042</p>
-              </div>
-              <div className="text-right">
-                <p className="text-sm font-semibold text-slate-900">85%</p>
-                <p className="text-xs text-slate-500">Battery</p>
-              </div>
-            </div>
-            <div className="w-full bg-slate-100 rounded-full h-2 mb-4">
-              <div className="bg-primary rounded-full h-2 w-[85%]" />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center">
-                  <MapPin size={18} className="text-blue-500" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500">Distance</p>
-                  <p className="text-sm font-semibold text-slate-900">1.8 km</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-lg bg-purple-50 flex items-center justify-center">
-                  <Clock size={18} className="text-purple-500" />
-                </div>
-                <div>
-                  <p className="text-xs text-slate-500">ETA</p>
-                  <p className="text-sm font-semibold text-slate-900">~5 min</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* End Ride Button */}
-          <Link to="/ride/complete">
-            <Button variant="danger" fullWidth size="lg" className="text-base">
-              End Ride
-            </Button>
-          </Link>
+          <Button variant="danger" fullWidth size="lg" className="text-base" onClick={handleEndRide} disabled={loading}>
+            {loading ? 'Ending...' : 'End Ride'}
+          </Button>
         </div>
 
-        {/* Map Area */}
-        <div className="relative">
-          <MapPlaceholder
-            className="h-64 lg:h-full min-h-[300px]"
-            showRoute
-            scooterDots={[
-              { top: '50%', left: '48%' },
-            ]}
-          />
-
-          {/* Speed Widget */}
-          <div className="absolute bottom-4 right-4 bg-white rounded-xl shadow-lg p-3 text-center min-w-[80px]">
-            <Gauge size={18} className="text-primary mx-auto mb-1" />
-            <p className="text-xl font-bold text-slate-900">12</p>
-            <p className="text-xs text-slate-500">km/h</p>
-          </div>
-
-          {/* Current location indicator */}
-          <div className="absolute top-4 left-4 bg-white rounded-lg shadow-md px-3 py-2 flex items-center gap-2">
-            <Navigation size={14} className="text-primary" />
-            <span className="text-xs font-medium text-slate-700">Central Park Area</span>
-          </div>
-        </div>
+        <RideMapCard variant="active" />
       </div>
     </div>
   );
