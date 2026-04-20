@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Bike } from 'lucide-react';
 import IconTile from '../ui/IconTile';
 import RatingStars from '../ui/RatingStars';
+import SectionHeader from '../ui/SectionHeader';
 import { useLastRide } from '../../stores/rideHistoryStore';
 
 export default function LastRideCard() {
@@ -9,12 +10,15 @@ export default function LastRideCard() {
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-900">Last Ride</h3>
-        <Link to="/history" className="text-sm text-primary font-medium hover:underline">
-          View All
-        </Link>
-      </div>
+      <SectionHeader
+        title="Last Ride"
+        className="mb-4"
+        action={
+          <Link to="/history" className="text-sm text-primary font-medium hover:underline">
+            View All
+          </Link>
+        }
+      />
       {lastRide ? (
         <Link
           to={`/history/${lastRide.id}`}

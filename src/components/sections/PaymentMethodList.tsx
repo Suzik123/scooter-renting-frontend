@@ -1,15 +1,19 @@
 import { useWalletStore } from '../../stores/walletStore';
 import PaymentMethodRow from './PaymentMethodRow';
+import SectionHeader from '../ui/SectionHeader';
 
 export default function PaymentMethodList() {
   const methods = useWalletStore((s) => s.paymentMethods);
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-900">Payment Methods</h3>
-        <button className="text-sm text-primary font-medium cursor-pointer hover:underline">Add</button>
-      </div>
+      <SectionHeader
+        title="Payment Methods"
+        className="mb-4"
+        action={
+          <button className="text-sm text-primary font-medium cursor-pointer hover:underline">Add</button>
+        }
+      />
       <div className="space-y-3">
         {methods.map((method) => (
           <PaymentMethodRow key={method.id} method={method} />

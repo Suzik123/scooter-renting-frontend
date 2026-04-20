@@ -1,3 +1,5 @@
+import SectionHeader from '../ui/SectionHeader';
+
 const SPENDING = [
   { label: 'Mon', value: 3.2, max: 8 },
   { label: 'Tue', value: 5.1, max: 8 },
@@ -12,10 +14,11 @@ export default function SpendingChart() {
   const total = SPENDING.reduce((s, d) => s + d.value, 0);
   return (
     <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 p-5">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="font-semibold text-slate-900">This Week</h3>
-        <span className="text-sm text-slate-500">${total.toFixed(2)} total</span>
-      </div>
+      <SectionHeader
+        title="This Week"
+        className="mb-4"
+        action={<span className="text-sm text-slate-500">${total.toFixed(2)} total</span>}
+      />
       <div className="flex items-end gap-3 h-32">
         {SPENDING.map((day) => (
           <div key={day.label} className="flex-1 flex flex-col items-center gap-2">
