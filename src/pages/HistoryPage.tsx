@@ -1,0 +1,201 @@
+import { Link } from 'react-router-dom';
+import { Bike, MapPin, Clock, DollarSign, Leaf, Star, ChevronRight } from 'lucide-react';
+import { rideHistory, userStats } from '../mock/data';
+import { clsx } from 'clsx';
+import Badge from '../components/ui/Badge';
+import { useState } from 'react';
+
+const filterOptions = ['All', 'This Week', 'Last Week', 'This Month'];
+
+export default function HistoryPage() {
+  const [filter, setFilter] = useState('All');
+
+  const filteredRides = filter === 'All'
+    ? rideHistory
+    : rideHistory.filter((r) => {
+        if (filter === 'This Week') return r.dateLabel === 'Today' || r.dateLabel === 'Yesterday' || r.dateLabel === 'This Week';
+        if (filter === 'Last Week') return r.dateLabel === 'Last Week';
+        return true;
+      });
+
+  // Group rides by dateLabel
+  const groups = filteredRides.reduce<Record<string, typeof rideHistory>>((acc, ride) => {
+    const key = ride.dateLabel || ride.date;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(ride);
+    return acc;
+  }, {});
+
+  return (
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl">
+      <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">Ride History</h1>
+
+      {/* Stats Summary */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <Bike size={16} className="text-primary" />
+            <span className="text-xs text-slate-500">Total Rides</span>
+          </div>
+          <p className="text-lg font-bold text-slate-900">{userStats.totalRides}</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <MapPin size={16} className="text-primary" />
+            <span className="text-xs text-slate-500">Distance</span>
+          </div>
+          <p className="text-lg font-bold text-slate-900">{userStats.totalDistance}</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <DollarSign size={16} className="text-primary" />
+            <span className="text-xs text-slate-500">Spent</span>
+          </div>
+          <p className="text-lg font-bold text-slate-900">{userStats.totalSpent}</p>
+        </div>
+        <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4">
+          <div className="flex items-center gap-2 mb-1">
+            <Leaf size={16} className="text-primary" />
+            <span className="text-xs text-slate-500">CO2 Saved</span>
+          </div>
+          <p className="text-lg font-bold text-slate-900">{userStats.co2Saved}</p>
+        </div>
+      </div>
+
+      {/* Filter pills - mobile */}
+      <div className="lg:hidden flex gap-2 mb-4 overflow-x-auto">
+        {filterOptions.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={clsx(
+              'px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors cursor-pointer',
+              filter === f ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+            )}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+
+      {/* Desktop: Table view */}
+      <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="flex items-center justify-between p-4 border-b border-slate-100">
+          <h3 className="font-semibold text-slate-900">All Rides</h3>
+          <div className="flex gap-2">
+            {filterOptions.map((f) => (
+              <button
+                key={f}
+                onClick={() => setFilter(f)}
+                className={clsx(
+                  'px-3 py-1.5 rounded-full text-xs font-medium transition-colors cursor-pointer',
+                  filter === f ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
+                )}
+              >
+                {f}
+              </button>
+            ))}
+          </div>
+        </div>
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-slate-100 text-left">
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Route</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Scooter</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Date</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Duration</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Distance</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Cost</th>
+              <th className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">Rating</th>
+              <th className="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredRides.map((ride) => (
+              <tr key={ride.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors">
+                <td className="px-4 py-3">
+                  <p className="text-sm font-medium text-slate-900">{ride.from} → {ride.to}</p>
+                </td>
+                <td className="px-4 py-3">
+                  <p className="text-sm text-slate-600">{ride.scooterName}</p>
+                  <p className="text-xs text-slate-400">{ride.scooterId}</p>
+                </td>
+                <td className="px-4 py-3 text-sm text-slate-600">{ride.date}</td>
+                <td className="px-4 py-3 text-sm text-slate-600">{ride.duration}</td>
+                <td className="px-4 py-3 text-sm text-slate-600">{ride.distance}</td>
+                <td className="px-4 py-3 text-sm font-semibold text-slate-900">{ride.cost}</td>
+                <td className="px-4 py-3">
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <Star key={i} size={12} className={i < ride.rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200'} />
+                    ))}
+                  </div>
+                </td>
+                <td className="px-4 py-3">
+                  <Link to={`/history/${ride.id}`} className="text-primary hover:underline">
+                    <ChevronRight size={16} />
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile: Grouped card list */}
+      <div className="lg:hidden space-y-6">
+        {Object.entries(groups).map(([label, rides]) => (
+          <div key={label}>
+            <h3 className="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-3">{label}</h3>
+            <div className="space-y-3">
+              {rides.map((ride) => (
+                <Link
+                  key={ride.id}
+                  to={`/history/${ride.id}`}
+                  className="block bg-white rounded-xl shadow-sm border border-slate-100 p-4 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex gap-3">
+                    {/* Mini map placeholder */}
+                    <div className="w-16 h-16 bg-[#E8E4D9] rounded-lg flex-shrink-0 relative overflow-hidden">
+                      <div className="absolute inset-0">
+                        {[30, 60].map((pos) => (
+                          <div key={`h-${pos}`} className="absolute left-0 right-0 border-t border-[#D4D0C8]" style={{ top: `${pos}%` }} />
+                        ))}
+                        {[30, 60].map((pos) => (
+                          <div key={`v-${pos}`} className="absolute top-0 bottom-0 border-l border-[#D4D0C8]" style={{ left: `${pos}%` }} />
+                        ))}
+                      </div>
+                      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <path d="M 20 30 Q 50 50, 75 70" fill="none" stroke="#22C55E" strokeWidth="3" strokeLinecap="round" />
+                      </svg>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between mb-1">
+                        <p className="font-medium text-sm text-slate-900 truncate">{ride.from} → {ride.to}</p>
+                        <span className="text-sm font-semibold text-slate-900 ml-2 flex-shrink-0">{ride.cost}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
+                        <span className="flex items-center gap-1"><Clock size={12} /> {ride.duration}</span>
+                        <span className="flex items-center gap-1"><MapPin size={12} /> {ride.distance}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <div className="flex gap-0.5">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star key={i} size={10} className={i < ride.rating ? 'text-yellow-400 fill-yellow-400' : 'text-slate-200'} />
+                          ))}
+                        </div>
+                        <Badge variant={ride.status === 'completed' ? 'success' : 'default'}>
+                          {ride.status}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
