@@ -1,20 +1,20 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Scooter, Ride } from '../types';
-import { useWalletStore } from './walletStore';
-import { useRideHistoryStore } from './rideHistoryStore';
-
-export const PRICING = {
-  unlockFee: 1.0,
-  ratePerMin: 0.29,
-};
+import type { Scooter, Rental, PaymentResult } from '../types';
+import * as rentalsApi from '../api/rentals';
+import { isApiError } from '../api/errors';
 
 export interface ActiveRide {
-  scooterId: string;
-  scooterName: string;
-  battery: number;
-  startedAt: number;
-  fromLabel: string;
+  rental_id: string;
+  scooter_id: string;
+  scooter_label: string;
+  battery_level: number;
+  price_model_id: string;
+  price_per_minute: number;
+  unlock_fee: number;
+  currency: string;
+  start_time: string; // ISO
+  startedAtMs: number; // for fast elapsed calculation
 }
 
 interface ActiveRideState {
@@ -23,22 +23,61 @@ interface ActiveRideState {
   currentCost: number;
   loading: boolean;
   error: string | null;
-  startRide: (scooter: Scooter, fromLabel?: string) => Promise<void>;
-  endRide: () => Promise<Ride | null>;
+  needsCard: boolean;
+  hasOutstanding: boolean;
+  finishedRental: Rental | null;
+  finishedPayment: PaymentResult | null;
+  startRide: (
+    scooter: Scooter,
+    priceModel: { price_model_id: string; price_per_minute: number; unlock_fee: number; currency: string },
+  ) => Promise<Rental | null>;
+  endRide: () => Promise<{ rental: Rental; payment: PaymentResult } | null>;
+  clearFlags: () => void;
+  clearFinished: () => void;
   cancelRide: () => void;
   _tick: () => void;
 }
 
 let tickerId: ReturnType<typeof setInterval> | null = null;
 
-function computeCost(elapsedSeconds: number): number {
-  return PRICING.unlockFee + PRICING.ratePerMin * (elapsedSeconds / 60);
+function getCurrentPosition(timeoutMs = 5000): Promise<GeolocationPosition | null> {
+  if (typeof navigator === 'undefined' || !navigator.geolocation) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    let settled = false;
+    const t = setTimeout(() => {
+      if (!settled) {
+        settled = true;
+        resolve(null);
+      }
+    }, timeoutMs);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(t);
+          resolve(pos);
+        }
+      },
+      () => {
+        if (!settled) {
+          settled = true;
+          clearTimeout(t);
+          resolve(null);
+        }
+      },
+      { enableHighAccuracy: false, maximumAge: 30000, timeout: timeoutMs },
+    );
+  });
 }
 
-function formatDuration(totalSeconds: number): string {
-  const mins = Math.floor(totalSeconds / 60);
-  const secs = totalSeconds % 60;
-  return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+function computeCost(elapsedSeconds: number, ride: ActiveRide): number {
+  return ride.unlock_fee + ride.price_per_minute * (elapsedSeconds / 60);
+}
+
+function toErrorMessage(e: unknown, fallback: string): string {
+  if (isApiError(e)) return e.message || fallback;
+  if (e instanceof Error) return e.message || fallback;
+  return fallback;
 }
 
 export const useActiveRideStore = create<ActiveRideState>()(
@@ -46,73 +85,95 @@ export const useActiveRideStore = create<ActiveRideState>()(
     (set, get) => ({
       activeRide: null,
       elapsedSeconds: 0,
-      currentCost: PRICING.unlockFee,
+      currentCost: 0,
       loading: false,
       error: null,
+      needsCard: false,
+      hasOutstanding: false,
+      finishedRental: null,
+      finishedPayment: null,
       _tick: () => {
         const ride = get().activeRide;
         if (!ride) return;
-        const elapsed = Math.floor((Date.now() - ride.startedAt) / 1000);
-        set({ elapsedSeconds: elapsed, currentCost: computeCost(elapsed) });
+        const elapsed = Math.floor((Date.now() - ride.startedAtMs) / 1000);
+        set({ elapsedSeconds: elapsed, currentCost: computeCost(elapsed, ride) });
       },
-      startRide: async (scooter, fromLabel = 'Current Location') => {
-        set({ loading: true, error: null });
+      startRide: async (scooter, priceModel) => {
+        set({ loading: true, error: null, needsCard: false, hasOutstanding: false });
         try {
-          const startedAt = Date.now();
+          const pos = await getCurrentPosition();
+          const rental = await rentalsApi.startRental({
+            scooter_id: scooter.scooter_id,
+            price_model_id: priceModel.price_model_id,
+            start_lat: pos?.coords.latitude,
+            start_lon: pos?.coords.longitude,
+          });
+          const startedAtMs = rental.start_time ? Date.parse(rental.start_time) : Date.now();
           const activeRide: ActiveRide = {
-            scooterId: scooter.id,
-            scooterName: scooter.name,
-            battery: scooter.battery,
-            startedAt,
-            fromLabel,
+            rental_id: rental.rental_id,
+            scooter_id: scooter.scooter_id,
+            scooter_label: scooter.model || `Scooter ${scooter.scooter_id}`,
+            battery_level: scooter.battery_level,
+            price_model_id: priceModel.price_model_id,
+            price_per_minute: priceModel.price_per_minute,
+            unlock_fee: priceModel.unlock_fee,
+            currency: priceModel.currency,
+            start_time: rental.start_time ?? new Date().toISOString(),
+            startedAtMs: Number.isFinite(startedAtMs) ? startedAtMs : Date.now(),
           };
-          set({ activeRide, elapsedSeconds: 0, currentCost: PRICING.unlockFee, loading: false });
+          set({
+            activeRide,
+            elapsedSeconds: 0,
+            currentCost: priceModel.unlock_fee,
+            loading: false,
+          });
           ensureTicker();
+          return rental;
         } catch (e) {
-          set({ loading: false, error: 'Failed to start ride' });
+          if (isApiError(e)) {
+            if (e.kind === 'add_card_required') {
+              set({ loading: false, error: e.message, needsCard: true });
+              return null;
+            }
+            if (e.kind === 'outstanding_balance') {
+              set({ loading: false, error: e.message, hasOutstanding: true });
+              return null;
+            }
+          }
+          set({ loading: false, error: toErrorMessage(e, 'Failed to start ride') });
+          return null;
         }
       },
       endRide: async () => {
         const ride = get().activeRide;
         if (!ride) return null;
-        stopTicker();
         set({ loading: true, error: null });
         try {
-          const elapsed = Math.floor((Date.now() - ride.startedAt) / 1000);
-          const cost = computeCost(elapsed);
-          const durationLabel = formatDuration(elapsed);
-          const distanceKm = Math.max(0.1, (elapsed / 60) * 0.18);
-          const avgSpeed = elapsed > 0 ? (distanceKm / (elapsed / 3600)) : 0;
-          const now = new Date();
-          const finished: Ride = {
-            id: `r-${Date.now()}`,
-            scooterName: ride.scooterName,
-            scooterId: ride.scooterId,
-            from: ride.fromLabel,
-            to: 'Destination',
-            date: now.toISOString().slice(0, 10),
-            dateLabel: 'Today',
-            duration: durationLabel,
-            distance: `${distanceKm.toFixed(1)} km`,
-            cost: `$${cost.toFixed(2)}`,
-            avgSpeed: `${avgSpeed.toFixed(1)} km/h`,
-            maxSpeed: `${(avgSpeed * 1.6).toFixed(0)} km/h`,
-            rating: 0,
-            status: 'completed',
-            co2Saved: `${(distanceKm * 0.2).toFixed(1)} kg`,
-          };
-          useRideHistoryStore.getState().addRide(finished);
-          await useWalletStore.getState().chargeRide(cost, finished.id);
-          set({ activeRide: null, elapsedSeconds: 0, currentCost: PRICING.unlockFee, loading: false });
-          return finished;
+          const pos = await getCurrentPosition();
+          const result = await rentalsApi.endRental(ride.rental_id, {
+            end_lat: pos?.coords.latitude,
+            end_lon: pos?.coords.longitude,
+          });
+          stopTicker();
+          set({
+            activeRide: null,
+            elapsedSeconds: 0,
+            currentCost: 0,
+            loading: false,
+            finishedRental: result.rental,
+            finishedPayment: result.payment,
+          });
+          return result;
         } catch (e) {
-          set({ loading: false, error: 'Failed to end ride' });
+          set({ loading: false, error: toErrorMessage(e, 'Failed to end ride') });
           return null;
         }
       },
+      clearFlags: () => set({ needsCard: false, hasOutstanding: false, error: null }),
+      clearFinished: () => set({ finishedRental: null, finishedPayment: null }),
       cancelRide: () => {
         stopTicker();
-        set({ activeRide: null, elapsedSeconds: 0, currentCost: PRICING.unlockFee });
+        set({ activeRide: null, elapsedSeconds: 0, currentCost: 0 });
       },
     }),
     {
@@ -120,10 +181,9 @@ export const useActiveRideStore = create<ActiveRideState>()(
       partialize: (s) => ({ activeRide: s.activeRide }),
       onRehydrateStorage: () => (state) => {
         if (state?.activeRide) {
-          // Derive elapsed from wall-clock so the timer is correct after refresh
-          const elapsed = Math.floor((Date.now() - state.activeRide.startedAt) / 1000);
+          const elapsed = Math.floor((Date.now() - state.activeRide.startedAtMs) / 1000);
           state.elapsedSeconds = elapsed;
-          state.currentCost = computeCost(elapsed);
+          state.currentCost = computeCost(elapsed, state.activeRide);
           ensureTicker();
         }
       },

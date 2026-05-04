@@ -12,11 +12,10 @@ export default function ActiveRidePage() {
   const ride = useActiveRideStore((s) => s.activeRide);
   const endRide = useActiveRideStore((s) => s.endRide);
   const loading = useActiveRideStore((s) => s.loading);
+  const error = useActiveRideStore((s) => s.error);
   const showToast = useUIStore((s) => s.showToast);
   const navigate = useNavigate();
 
-  // Wait for persist rehydration before deciding to redirect — otherwise the
-  // first render sees null and bounces the user off a valid deep-linked ride.
   const [hydrated, setHydrated] = useState(() => useActiveRideStore.persist.hasHydrated());
   useEffect(() => useActiveRideStore.persist.onFinishHydration(() => setHydrated(true)), []);
 
@@ -28,10 +27,12 @@ export default function ActiveRidePage() {
   if (!ride) return null;
 
   const handleEndRide = async () => {
-    const finished = await endRide();
-    if (finished) {
-      showToast(`Ride ended. ${finished.cost} charged`, 'success');
+    const result = await endRide();
+    if (result) {
+      showToast('Ride ended', 'success');
       navigate('/ride/complete');
+    } else {
+      showToast(error ?? 'Failed to end ride', 'error');
     }
   };
 
@@ -43,7 +44,7 @@ export default function ActiveRidePage() {
             <Badge variant="success" className="animate-pulse text-sm px-4 py-1.5">
               RIDE ACTIVE
             </Badge>
-            <span className="text-xs text-slate-500">Scooter {ride.scooterId}</span>
+            <span className="text-xs text-slate-500">Scooter {ride.scooter_id}</span>
           </div>
 
           <RideTimerCard />

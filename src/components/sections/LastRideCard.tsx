@@ -1,9 +1,14 @@
 import { Link } from 'react-router-dom';
 import { Bike } from 'lucide-react';
 import IconTile from '../ui/IconTile';
-import RatingStars from '../ui/RatingStars';
 import SectionHeader from '../ui/SectionHeader';
-import { useLastRide } from '../../stores/rideHistoryStore';
+import {
+  useLastRide,
+  rentalDurationSeconds,
+  formatDurationLabel,
+  formatDistance,
+  formatCost,
+} from '../../stores/rideHistoryStore';
 
 export default function LastRideCard() {
   const lastRide = useLastRide();
@@ -21,7 +26,7 @@ export default function LastRideCard() {
       />
       {lastRide ? (
         <Link
-          to={`/history/${lastRide.id}`}
+          to={`/history/${lastRide.rental_id}`}
           className="block hover:bg-slate-50 rounded-lg -mx-2 px-2 py-2 transition-colors"
         >
           <div className="flex items-center gap-4">
@@ -29,14 +34,13 @@ export default function LastRideCard() {
               <Bike size={20} className="text-primary" />
             </IconTile>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-slate-900 text-sm">{lastRide.from} → {lastRide.to}</p>
+              <p className="font-medium text-slate-900 text-sm">Ride {lastRide.rental_id.slice(0, 8)}</p>
               <p className="text-xs text-slate-500">
-                {lastRide.scooterName} · {lastRide.duration} · {lastRide.distance}
+                {formatDurationLabel(rentalDurationSeconds(lastRide))} · {formatDistance(lastRide.distance_m)}
               </p>
             </div>
             <div className="text-right flex-shrink-0">
-              <p className="font-semibold text-slate-900 text-sm">{lastRide.cost}</p>
-              <RatingStars value={lastRide.rating} size={10} className="justify-end" />
+              <p className="font-semibold text-slate-900 text-sm">{formatCost(lastRide.total_cost)}</p>
             </div>
           </div>
         </Link>

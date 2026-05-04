@@ -17,7 +17,7 @@ export default function StartRideBanner() {
           <div>
             <p className="text-sm text-white/80 mb-1">Ride in progress</p>
             <h2 className="text-lg sm:text-xl font-bold mb-1">Resume Active Ride</h2>
-            <p className="text-sm text-white/80">{activeRide.scooterName} · {activeRide.scooterId}</p>
+            <p className="text-sm text-white/80">{activeRide.scooter_label} · {activeRide.scooter_id}</p>
           </div>
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
             <PlayCircle size={24} />

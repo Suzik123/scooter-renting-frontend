@@ -9,6 +9,7 @@ export default function ActiveRideScooterCard() {
 
   if (!ride) return null;
 
+  // Distance is approximated until the backend streams live telemetry.
   const distanceKm = Math.max(0.1, (elapsed / 60) * 0.18);
   const etaMin = Math.max(1, Math.round(5 - elapsed / 60));
 
@@ -16,15 +17,15 @@ export default function ActiveRideScooterCard() {
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="font-semibold text-slate-900">{ride.scooterName}</h3>
-          <p className="text-xs text-slate-500">{ride.scooterId}</p>
+          <h3 className="font-semibold text-slate-900">{ride.scooter_label}</h3>
+          <p className="text-xs text-slate-500">{ride.scooter_id}</p>
         </div>
         <div className="text-right">
-          <p className="text-sm font-semibold text-slate-900">{ride.battery}%</p>
+          <p className="text-sm font-semibold text-slate-900">{ride.battery_level}%</p>
           <p className="text-xs text-slate-500">Battery</p>
         </div>
       </div>
-      <ProgressBar value={ride.battery} height="md" className="mb-4" />
+      <ProgressBar value={ride.battery_level} height="md" className="mb-4" />
 
       <div className="grid grid-cols-2 gap-4">
         <div className="flex items-center gap-3">

@@ -2,9 +2,13 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import ToastHost from '../ui/ToastHost';
-import TopUpModal from '../sections/TopUpModal';
+import AddCardModal from '../sections/AddCardModal';
+import { useUIStore } from '../../stores/uiStore';
 
 export default function AppLayout() {
+  const addCardOpen = useUIStore((s) => s.addCardModalOpen);
+  const closeAddCard = useUIStore((s) => s.closeAddCard);
+
   return (
     <div className="min-h-screen">
       <Sidebar />
@@ -13,7 +17,7 @@ export default function AppLayout() {
       </main>
       <BottomNav />
       <ToastHost />
-      <TopUpModal />
+      <AddCardModal open={addCardOpen} onClose={closeAddCard} />
     </div>
   );
 }

@@ -1,60 +1,97 @@
 export interface User {
-  id: string;
-  name: string;
+  user_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
-  avatar?: string;
-  initials: string;
-  memberSince: string;
-  plan: string;
-  verified: boolean;
+  phone_number?: string;
+  registration_date: string;
+  status: string;
+  role: string;
 }
+
+export type ScooterStatus = 'available' | 'in_use' | 'low_battery' | 'maintenance' | 'reserved' | 'offline';
 
 export interface Scooter {
-  id: string;
+  scooter_id: string;
+  qr_code?: string;
+  battery_level: number;
+  status: ScooterStatus | string;
+  zone_id?: string;
+  // Backend serializes decimal.Decimal as a JSON string (e.g. "40.713").
+  // Convert with toNum() at the use site.
+  lat: string;
+  lng: string;
+  model?: string;
+}
+
+export interface Zone {
+  zone_id: string;
   name: string;
-  model: string;
-  battery: number;
-  distance: string;
-  price: string;
-  status: 'available' | 'in-use' | 'low-battery' | 'maintenance';
-  lat?: number;
-  lng?: number;
+  center_lat: number;
+  center_lon: number;
+  radius_meters: number;
+  zone_type: string;
 }
 
-export interface Ride {
-  id: string;
-  scooterName: string;
-  scooterId: string;
-  from: string;
-  to: string;
-  date: string;
-  dateLabel?: string;
-  duration: string;
-  distance: string;
-  cost: string;
-  avgSpeed: string;
-  maxSpeed: string;
-  rating: number;
-  status: 'completed' | 'cancelled' | 'in-progress';
-  co2Saved: string;
+export interface PriceModel {
+  price_model_id: string;
+  name: string;
+  // Decimal fields arrive as JSON strings. Use toNum() / formatCost() at consumption sites.
+  unlock_fee: string;
+  price_per_minute: string;
+  currency: string;
+  daily_cap?: string;
 }
 
-export interface Transaction {
-  id: string;
-  type: 'topup' | 'ride' | 'refund' | 'subscription';
-  description: string;
+export type RentalStatus = 'active' | 'completed' | 'cancelled' | 'pending';
+
+export interface Rental {
+  rental_id: string;
+  user_id: string;
+  scooter_id: string;
+  price_model_id: string;
+  start_time: string;
+  end_time?: string;
+  // Decimal fields are JSON strings on the wire and may be null when geo
+  // is missing (e.g. user denied location at start/end). Use toNum() / formatLatLng().
+  start_lat?: string | null;
+  start_lon?: string | null;
+  end_lat?: string | null;
+  end_lon?: string | null;
+  total_cost?: string | null;
+  status: RentalStatus | string;
+  distance_m?: number;
+}
+
+export type PaymentStatus = 'succeeded' | 'pending' | 'failed' | 'refunded';
+
+export interface Payment {
+  payment_id: string;
+  user_id: string;
+  rental_id?: string;
+  // Decimal field arrives as a JSON string. Use formatCost() / toNum().
   amount: string;
-  date: string;
-  positive: boolean;
+  currency: string;
+  payment_method: string;
+  status: PaymentStatus | string;
+  transaction_date: string;
+  failure_reason?: string;
 }
 
 export interface PaymentMethod {
   id: string;
-  type: 'visa' | 'mastercard' | 'apple-pay';
-  label: string;
-  last4?: string;
-  expiry?: string;
-  isDefault: boolean;
+  brand: string;
+  last4: string;
+  exp_month: number;
+  exp_year: number;
+  is_default: boolean;
+}
+
+export interface PaymentResult {
+  id?: string;
+  status: 'succeeded' | 'pending' | 'failed';
+  client_secret?: string;
+  failure_reason?: string;
 }
 
 export interface PricingPlan {
@@ -65,13 +102,4 @@ export interface PricingPlan {
   features: string[];
   highlighted: boolean;
   badge?: string;
-}
-
-export interface UserStats {
-  totalRides: number;
-  totalDistance: string;
-  totalSpent: string;
-  co2Saved: string;
-  avgRideTime: string;
-  favoriteScooter: string;
 }

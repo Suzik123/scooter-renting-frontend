@@ -1,16 +1,18 @@
 import { Zap } from 'lucide-react';
 import ProgressBar from '../ui/ProgressBar';
-import { useAuthStore } from '../../stores/authStore';
 
 interface ActivePlanCardProps {
-  // TODO: derive from real plan data once backend supplies daily allowance + usage
+  // TODO: derive plan name + minute usage from backend once that data is exposed.
+  planName?: string;
   minutesRemaining?: number;
   minutesTotal?: number;
 }
 
-export default function ActivePlanCard({ minutesRemaining = 38, minutesTotal = 60 }: ActivePlanCardProps) {
-  const user = useAuthStore((s) => s.user);
-  const planName = user?.plan ?? 'Weekly Pass';
+export default function ActivePlanCard({
+  planName = 'Pay-as-you-go',
+  minutesRemaining = 38,
+  minutesTotal = 60,
+}: ActivePlanCardProps) {
   const pct = Math.round((minutesRemaining / minutesTotal) * 100);
 
   return (

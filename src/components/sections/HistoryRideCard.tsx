@@ -1,17 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Clock, MapPin } from 'lucide-react';
-import type { Ride } from '../../types';
+import type { Rental } from '../../types';
 import Badge from '../ui/Badge';
-import RatingStars from '../ui/RatingStars';
+import {
+  rentalDurationSeconds,
+  formatDurationLabel,
+  formatDistance,
+  formatCost,
+} from '../../stores/rideHistoryStore';
 
 interface HistoryRideCardProps {
-  ride: Ride;
+  ride: Rental;
 }
 
 export default function HistoryRideCard({ ride }: HistoryRideCardProps) {
+  const duration = formatDurationLabel(rentalDurationSeconds(ride));
+
   return (
     <Link
-      to={`/history/${ride.id}`}
+      to={`/history/${ride.rental_id}`}
       className="block bg-white rounded-xl shadow-sm border border-slate-100 p-4 hover:shadow-md transition-shadow"
     >
       <div className="flex gap-3">
@@ -39,16 +46,17 @@ export default function HistoryRideCard({ ride }: HistoryRideCardProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-1">
             <p className="font-medium text-sm text-slate-900 truncate">
-              {ride.from} → {ride.to}
+              Ride {ride.rental_id.slice(0, 8)}
             </p>
-            <span className="text-sm font-semibold text-slate-900 ml-2 flex-shrink-0">{ride.cost}</span>
+            <span className="text-sm font-semibold text-slate-900 ml-2 flex-shrink-0">
+              {formatCost(ride.total_cost)}
+            </span>
           </div>
           <div className="flex items-center gap-2 text-xs text-slate-500 mb-2">
-            <span className="flex items-center gap-1"><Clock size={12} /> {ride.duration}</span>
-            <span className="flex items-center gap-1"><MapPin size={12} /> {ride.distance}</span>
+            <span className="flex items-center gap-1"><Clock size={12} /> {duration}</span>
+            <span className="flex items-center gap-1"><MapPin size={12} /> {formatDistance(ride.distance_m)}</span>
           </div>
-          <div className="flex items-center justify-between">
-            <RatingStars value={ride.rating} size={10} />
+          <div className="flex items-center justify-end">
             <Badge variant={ride.status === 'completed' ? 'success' : 'default'}>{ride.status}</Badge>
           </div>
         </div>

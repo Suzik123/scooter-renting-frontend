@@ -1,17 +1,25 @@
 import { Clock, Gauge, MapPin, Leaf } from 'lucide-react';
-import type { Ride } from '../../types';
+import type { Rental } from '../../types';
 import StatCard from '../ui/StatCard';
+import { rentalDurationSeconds, formatDistance, formatDurationLabel } from '../../stores/rideHistoryStore';
 
 interface RideCompleteSummaryProps {
-  ride: Ride;
+  rental: Rental;
 }
 
-export default function RideCompleteSummary({ ride }: RideCompleteSummaryProps) {
+const CO2_PER_KM_KG = 0.21;
+
+export default function RideCompleteSummary({ rental }: RideCompleteSummaryProps) {
+  const seconds = rentalDurationSeconds(rental);
+  const km = (rental.distance_m ?? 0) / 1000;
+  const avgSpeed = seconds > 0 ? (km / (seconds / 3600)).toFixed(1) : '0.0';
+  const co2 = (km * CO2_PER_KM_KG).toFixed(1);
+
   const tiles = [
-    { icon: <Clock size={16} />, label: 'Duration', value: ride.duration },
-    { icon: <Gauge size={16} />, label: 'Avg Speed', value: ride.avgSpeed },
-    { icon: <MapPin size={16} />, label: 'Distance', value: ride.distance },
-    { icon: <Leaf size={16} />, label: 'CO2 Saved', value: ride.co2Saved },
+    { icon: <Clock size={16} />, label: 'Duration', value: formatDurationLabel(seconds) },
+    { icon: <Gauge size={16} />, label: 'Avg Speed', value: `${avgSpeed} km/h` },
+    { icon: <MapPin size={16} />, label: 'Distance', value: formatDistance(rental.distance_m) },
+    { icon: <Leaf size={16} />, label: 'CO2 Saved', value: `${co2} kg` },
   ];
 
   return (

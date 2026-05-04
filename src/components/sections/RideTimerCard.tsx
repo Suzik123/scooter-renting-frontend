@@ -1,8 +1,19 @@
 import { useActiveRideStore, formatElapsed } from '../../stores/activeRideStore';
 
+function formatMoney(amount: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(amount);
+  } catch {
+    return `$${amount.toFixed(2)}`;
+  }
+}
+
 export default function RideTimerCard() {
+  const ride = useActiveRideStore((s) => s.activeRide);
   const elapsed = useActiveRideStore((s) => s.elapsedSeconds);
   const cost = useActiveRideStore((s) => s.currentCost);
+
+  const currency = ride?.currency ?? 'USD';
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 text-center">
@@ -15,7 +26,7 @@ export default function RideTimerCard() {
         {formatElapsed(elapsed)}
       </p>
       <p className="text-sm text-slate-500">
-        Current Cost: <span className="text-lg font-bold text-primary">${cost.toFixed(2)}</span>
+        Current Cost: <span className="text-lg font-bold text-primary">{formatMoney(cost, currency)}</span>
       </p>
     </div>
   );

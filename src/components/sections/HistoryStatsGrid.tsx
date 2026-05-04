@@ -1,14 +1,26 @@
 import { Bike, MapPin, DollarSign, Leaf } from 'lucide-react';
 import { useRideHistoryStore } from '../../stores/rideHistoryStore';
+import { toNum } from '../../lib/decimal';
+
+const CO2_PER_KM_KG = 0.21;
+
+function formatDistance(meters: number): string {
+  if (meters < 1000) return `${Math.round(meters)} m`;
+  return `${(meters / 1000).toFixed(1)} km`;
+}
 
 export default function HistoryStatsGrid() {
-  const stats = useRideHistoryStore((s) => s.stats);
+  const rides = useRideHistoryStore((s) => s.rides);
+
+  const totalDistanceM = rides.reduce((sum, r) => sum + (r.distance_m ?? 0), 0);
+  const totalSpent = rides.reduce((sum, r) => sum + toNum(r.total_cost), 0);
+  const co2Saved = (totalDistanceM / 1000) * CO2_PER_KM_KG;
 
   const tiles = [
-    { icon: Bike, label: 'Total Rides', value: String(stats.totalRides) },
-    { icon: MapPin, label: 'Distance', value: stats.totalDistance },
-    { icon: DollarSign, label: 'Spent', value: stats.totalSpent },
-    { icon: Leaf, label: 'CO2 Saved', value: stats.co2Saved },
+    { icon: Bike, label: 'Total Rides', value: String(rides.length) },
+    { icon: MapPin, label: 'Distance', value: formatDistance(totalDistanceM) },
+    { icon: DollarSign, label: 'Spent', value: `$${totalSpent.toFixed(2)}` },
+    { icon: Leaf, label: 'CO2 Saved', value: `${co2Saved.toFixed(1)} kg` },
   ];
 
   return (

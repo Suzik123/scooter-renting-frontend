@@ -1,12 +1,13 @@
 import HistoryRideRow from './HistoryRideRow';
 import HistoryFilterPills from './HistoryFilterPills';
 import HistoryEmptyState from './HistoryEmptyState';
-import { useFilteredRides } from '../../stores/rideHistoryStore';
+import { useFilteredRides, useRideHistoryStore } from '../../stores/rideHistoryStore';
 
-const COLUMNS = ['Route', 'Scooter', 'Date', 'Duration', 'Distance', 'Cost', 'Rating'];
+const COLUMNS = ['Ride', 'Scooter', 'Date', 'Duration', 'Distance', 'Cost', 'Status'];
 
 export default function HistoryRidesTable() {
   const filteredRides = useFilteredRides();
+  const loading = useRideHistoryStore((s) => s.loading);
 
   return (
     <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
@@ -27,9 +28,16 @@ export default function HistoryRidesTable() {
         </thead>
         <tbody>
           {filteredRides.map((ride) => (
-            <HistoryRideRow key={ride.id} ride={ride} />
+            <HistoryRideRow key={ride.rental_id} ride={ride} />
           ))}
-          {filteredRides.length === 0 && <HistoryEmptyState variant="row" />}
+          {!loading && filteredRides.length === 0 && <HistoryEmptyState variant="row" />}
+          {loading && filteredRides.length === 0 && (
+            <tr>
+              <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-500">
+                Loading rides...
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
     </div>

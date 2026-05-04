@@ -4,7 +4,7 @@ import { MapPin, Clock, Zap, ChevronRight } from 'lucide-react';
 const ACTIONS = [
   { to: '/map', label: 'Find a Scooter', icon: MapPin },
   { to: '/history', label: 'Ride History', icon: Clock },
-  { to: '/wallet', label: 'Top Up Wallet', icon: Zap },
+  { to: '/wallet', label: 'Wallet', icon: Zap },
 ];
 
 export default function QuickActionsCard() {
