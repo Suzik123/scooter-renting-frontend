@@ -1,0 +1,34 @@
+{
+  "title": "Historia jazd",
+  "filters": {
+    "all": "Wszystkie",
+    "thisWeek": "Ten tydzień",
+    "thisMonth": "Ten miesiąc",
+    "thisYear": "Ten rok"
+  },
+  "empty": {
+    "title": "Brak jazd",
+    "subtitle": "Twoje zakończone jazdy pojawią się tutaj"
+  },
+  "stats": {
+    "totalRides": "Łączna liczba jazd",
+    "totalDistance": "Łączny dystans",
+    "totalSpent": "Łącznie wydane",
+    "totalMinutes": "Łączne minuty"
+  },
+  "ride": {
+    "duration": "Czas trwania",
+    "distance": "Dystans",
+    "cost": "Koszt",
+    "viewDetails": "Zobacz szczegóły"
+  },
+  "detail": {
+    "title": "Szczegóły jazdy",
+    "route": "Trasa",
+    "stats": "Statystyki",
+    "cost": "Podział kosztów",
+    "unlockFee": "Opłata startowa",
+    "perMinute": "Za minutę",
+    "total": "Razem"
+  }
+}

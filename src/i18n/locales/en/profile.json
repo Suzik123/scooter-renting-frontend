@@ -1,0 +1,29 @@
+{
+  "title": "Profile",
+  "logout": "Log out",
+  "loggingOut": "Logging out...",
+  "ecoImpact": {
+    "title": "Eco Impact",
+    "co2Saved": "CO₂ saved",
+    "trees": "Equivalent to {{count}} trees"
+  },
+  "favorite": {
+    "title": "Favorite Scooter",
+    "empty": "Take more rides to discover your favorite"
+  },
+  "settings": {
+    "account": "Account Settings",
+    "personal": "Personal Information",
+    "security": "Security & Privacy",
+    "payments": "Payment Methods",
+    "notifications": "Notifications",
+    "preferences": "App Preferences",
+    "appearance": "Appearance",
+    "language": "Language & Region",
+    "location": "Location Settings",
+    "support": "Support",
+    "helpCenter": "Help Center",
+    "contact": "Contact Support",
+    "terms": "Terms & Conditions"
+  }
+}

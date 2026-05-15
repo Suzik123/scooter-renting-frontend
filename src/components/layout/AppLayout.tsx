@@ -4,13 +4,16 @@ import BottomNav from './BottomNav';
 import ToastHost from '../ui/ToastHost';
 import AddCardModal from '../sections/AddCardModal';
 import { useUIStore } from '../../stores/uiStore';
+import { usePaymentsPolling } from '../../hooks/usePaymentsPolling';
 
 export default function AppLayout() {
   const addCardOpen = useUIStore((s) => s.addCardModalOpen);
   const closeAddCard = useUIStore((s) => s.closeAddCard);
 
+  usePaymentsPolling();
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[var(--color-bg)]">
       <Sidebar />
       <main className="lg:ml-56 pb-20 lg:pb-0 min-h-screen">
         <Outlet />

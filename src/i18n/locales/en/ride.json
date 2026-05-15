@@ -1,0 +1,55 @@
+{
+  "active": {
+    "title": "Active Ride",
+    "duration": "Ride Duration",
+    "currentCost": "Current Cost:",
+    "endRide": "End ride",
+    "speed": "km/h",
+    "ending": "Ending..."
+  },
+  "complete": {
+    "title": "Ride Complete",
+    "summary": "Ride Summary",
+    "duration": "Duration",
+    "distance": "Distance",
+    "cost": "Total Cost",
+    "rate": "Rate this ride",
+    "done": "Done",
+    "viewReceipt": "View Receipt"
+  },
+  "confirm": {
+    "title": "End ride?",
+    "subtitle": "Are you sure you want to end this ride?",
+    "confirm": "End ride",
+    "cancel": "Keep riding"
+  },
+  "payment": {
+    "pending": "Payment pending",
+    "succeeded": "Payment succeeded",
+    "failed": "Payment failed",
+    "failureReason": "Reason: {{reason}}"
+  },
+  "admin": {
+    "title": "Offline Payment Approval",
+    "subtitle": "Record a cash or transfer payment for a completed rental.",
+    "rentalId": "Rental ID",
+    "rentalIdPlaceholder": "UUID of completed rental",
+    "amount": "Amount",
+    "amountPlaceholder": "0.00",
+    "currency": "Currency",
+    "note": "Note",
+    "notePlaceholder": "Optional note (cash, bank transfer, ...)",
+    "idempotencyKey": "Idempotency Key",
+    "submit": "Approve Payment",
+    "submitting": "Approving...",
+    "success": "Offline payment recorded",
+    "validation": {
+      "rentalIdRequired": "Rental ID is required",
+      "rentalIdInvalid": "Rental ID must be a valid UUID",
+      "amountRequired": "Amount is required",
+      "amountInvalid": "Amount must be a positive number",
+      "currencyInvalid": "Currency must be a 3-letter code",
+      "noteTooLong": "Note is too long"
+    }
+  }
+}

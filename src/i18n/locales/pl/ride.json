@@ -1,0 +1,55 @@
+{
+  "active": {
+    "title": "Aktywna jazda",
+    "duration": "Czas jazdy",
+    "currentCost": "Bieżący koszt:",
+    "endRide": "Zakończ jazdę",
+    "speed": "km/h",
+    "ending": "Kończenie..."
+  },
+  "complete": {
+    "title": "Jazda zakończona",
+    "summary": "Podsumowanie jazdy",
+    "duration": "Czas trwania",
+    "distance": "Dystans",
+    "cost": "Łączny koszt",
+    "rate": "Oceń tę jazdę",
+    "done": "Gotowe",
+    "viewReceipt": "Zobacz paragon"
+  },
+  "confirm": {
+    "title": "Zakończyć jazdę?",
+    "subtitle": "Czy na pewno chcesz zakończyć tę jazdę?",
+    "confirm": "Zakończ jazdę",
+    "cancel": "Kontynuuj jazdę"
+  },
+  "payment": {
+    "pending": "Płatność oczekująca",
+    "succeeded": "Płatność zakończona",
+    "failed": "Płatność nieudana",
+    "failureReason": "Powód: {{reason}}"
+  },
+  "admin": {
+    "title": "Zatwierdzanie płatności offline",
+    "subtitle": "Zarejestruj płatność gotówką lub przelewem za zakończoną jazdę.",
+    "rentalId": "ID wypożyczenia",
+    "rentalIdPlaceholder": "UUID zakończonego wypożyczenia",
+    "amount": "Kwota",
+    "amountPlaceholder": "0.00",
+    "currency": "Waluta",
+    "note": "Notatka",
+    "notePlaceholder": "Opcjonalna notatka (gotówka, przelew, ...)",
+    "idempotencyKey": "Klucz idempotentności",
+    "submit": "Zatwierdź płatność",
+    "submitting": "Zatwierdzanie...",
+    "success": "Płatność offline zarejestrowana",
+    "validation": {
+      "rentalIdRequired": "ID wypożyczenia jest wymagane",
+      "rentalIdInvalid": "ID wypożyczenia musi być prawidłowym UUID",
+      "amountRequired": "Kwota jest wymagana",
+      "amountInvalid": "Kwota musi być liczbą dodatnią",
+      "currencyInvalid": "Waluta musi mieć 3-literowy kod",
+      "noteTooLong": "Notatka jest za długa"
+    }
+  }
+}

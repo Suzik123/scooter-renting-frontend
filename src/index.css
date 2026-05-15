@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Tailwind v4 class-based dark variant. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   --color-primary: #22C55E;
   --color-primary-dark: #16A34A;
@@ -8,7 +11,46 @@
   --color-dark-card: #0F172A;
 }
 
+/*
+  Theme tokens.
+  Use these via `bg-[var(--color-bg)]`, `text-[var(--color-text-primary)]`, etc.
+  When introducing new surfaces in components, prefer these tokens
+  over hard-coded slate values so dark mode flips correctly.
+*/
+:root {
+  --color-bg: #F8FAFC;            /* slate-50 */
+  --color-bg-elevated: #FFFFFF;
+  --color-bg-muted: #F1F5F9;      /* slate-100 */
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F1F5F9;
+  --color-border: #E2E8F0;        /* slate-200 */
+  --color-border-muted: #F1F5F9;
+  --color-text-primary: #0F172A;  /* slate-900 */
+  --color-text-secondary: #475569;/* slate-600 */
+  --color-text-muted: #64748B;    /* slate-500 */
+  --color-text-faint: #94A3B8;    /* slate-400 */
+  --color-overlay: rgba(15, 23, 42, 0.5);
+}
+
+.dark {
+  --color-bg: #0B1220;
+  --color-bg-elevated: #0F172A;
+  --color-bg-muted: #1E293B;
+  --color-surface: #111827;
+  --color-surface-muted: #1F2937;
+  --color-border: #1F2937;
+  --color-border-muted: #1E293B;
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #CBD5E1;
+  --color-text-muted: #94A3B8;
+  --color-text-faint: #64748B;
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }

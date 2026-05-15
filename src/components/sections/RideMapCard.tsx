@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Gauge, Navigation } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import MapPlaceholder from '../MapPlaceholder';
+import ScooterMap from '../map/ScooterMap';
 
 interface RideMapCardProps {
   variant?: 'active' | 'complete' | 'detail';
@@ -58,12 +61,30 @@ function DarkMapBase({ dashed = false }: { dashed?: boolean }) {
   );
 }
 
+function useWatchedPosition(enabled: boolean): [number, number] | null {
+  const [pos, setPos] = useState<[number, number] | null>(null);
+  useEffect(() => {
+    if (!enabled || typeof navigator === 'undefined' || !navigator.geolocation) return;
+    const id = navigator.geolocation.watchPosition(
+      (p) => setPos([p.coords.latitude, p.coords.longitude]),
+      () => setPos(null),
+      { enableHighAccuracy: false, maximumAge: 10_000, timeout: 10_000 },
+    );
+    return () => navigator.geolocation.clearWatch(id);
+  }, [enabled]);
+  return pos;
+}
+
 export default function RideMapCard({
   variant = 'active',
-  routeLabel = 'Central Park Area',
+  routeLabel,
   speed = 12,
   className,
 }: RideMapCardProps) {
+  const { t } = useTranslation(['ride', 'map']);
+  const label = routeLabel ?? t('ride:active.title');
+  const userPos = useWatchedPosition(variant === 'active');
+
   if (variant === 'detail') {
     return (
       <div
@@ -86,27 +107,45 @@ export default function RideMapCard({
       >
         <DarkMapBase />
         <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5">
-          <p className="text-xs font-medium text-slate-700">{routeLabel}</p>
+          <p className="text-xs font-medium text-slate-700">{label}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // active variant — live map
+  if (!userPos) {
+    return (
+      <div className={className ?? 'relative'}>
+        <MapPlaceholder
+          className="h-64 lg:h-full min-h-[300px]"
+          showRoute
+          scooterDots={[{ top: '50%', left: '48%' }]}
+        />
+        <div className="absolute bottom-4 right-4 bg-[var(--color-bg-elevated)] rounded-xl shadow-lg p-3 text-center min-w-[80px]">
+          <Gauge size={18} className="text-primary mx-auto mb-1" />
+          <p className="text-xl font-bold text-[var(--color-text-primary)]">{speed}</p>
+          <p className="text-xs text-[var(--color-text-muted)]">{t('ride:active.speed')}</p>
+        </div>
+        <div className="absolute top-4 left-4 bg-[var(--color-bg-elevated)] rounded-lg shadow-md px-3 py-2 flex items-center gap-2">
+          <Navigation size={14} className="text-primary" />
+          <span className="text-xs font-medium text-[var(--color-text-secondary)]">{label}</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={className ?? 'relative'}>
-      <MapPlaceholder
-        className="h-64 lg:h-full min-h-[300px]"
-        showRoute
-        scooterDots={[{ top: '50%', left: '48%' }]}
-      />
-      <div className="absolute bottom-4 right-4 bg-white rounded-xl shadow-lg p-3 text-center min-w-[80px]">
+    <div className={className ?? 'relative h-64 lg:h-full min-h-[300px] rounded-2xl overflow-hidden'}>
+      <ScooterMap userLocation={userPos} followUser className="absolute inset-0" />
+      <div className="absolute bottom-4 right-4 z-[400] bg-[var(--color-bg-elevated)] rounded-xl shadow-lg p-3 text-center min-w-[80px]">
         <Gauge size={18} className="text-primary mx-auto mb-1" />
-        <p className="text-xl font-bold text-slate-900">{speed}</p>
-        <p className="text-xs text-slate-500">km/h</p>
+        <p className="text-xl font-bold text-[var(--color-text-primary)]">{speed}</p>
+        <p className="text-xs text-[var(--color-text-muted)]">{t('ride:active.speed')}</p>
       </div>
-      <div className="absolute top-4 left-4 bg-white rounded-lg shadow-md px-3 py-2 flex items-center gap-2">
+      <div className="absolute top-4 left-4 z-[400] bg-[var(--color-bg-elevated)] rounded-lg shadow-md px-3 py-2 flex items-center gap-2">
         <Navigation size={14} className="text-primary" />
-        <span className="text-xs font-medium text-slate-700">{routeLabel}</span>
+        <span className="text-xs font-medium text-[var(--color-text-secondary)]">{label}</span>
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ interface AuthState {
   login: (email: string, password: string) => Promise<void>;
   register: (firstName: string, lastName: string, email: string, password: string, phoneNumber?: string) => Promise<void>;
   loginWithGoogle: (idToken: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   clearError: () => void;
 }
 
@@ -67,8 +67,16 @@ export const useAuthStore = create<AuthState>()(
           throw e;
         }
       },
-      logout: () =>
-        set({ user: null, token: null, isAuthenticated: false, error: null, loading: false }),
+      logout: async () => {
+        // Best-effort backend revocation. If the network call fails (offline,
+        // backend down) we still clear local state so the user is not stuck.
+        try {
+          await authApi.logout();
+        } catch {
+          // ignore
+        }
+        set({ user: null, token: null, isAuthenticated: false, error: null, loading: false });
+      },
       clearError: () => set({ error: null }),
     }),
     {

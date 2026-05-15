@@ -1,0 +1,29 @@
+{
+  "title": "Portfel",
+  "balance": "Saldo",
+  "addCard": "Dodaj kartę",
+  "addCardTitle": "Dodaj kartę płatniczą",
+  "preparingForm": "Przygotowywanie bezpiecznego formularza...",
+  "cardholderName": "Imię i nazwisko posiadacza karty",
+  "cardholderPlaceholder": "Imię i nazwisko na karcie",
+  "saveCard": "Zapisz kartę",
+  "saving": "Zapisywanie...",
+  "cardAdded": "Karta dodana",
+  "setupFailed": "Konfiguracja karty nie została ukończona. Spróbuj ponownie.",
+  "saveFailed": "Nie udało się zapisać karty",
+  "methods": {
+    "title": "Metody płatności",
+    "default": "Domyślna",
+    "empty": "Brak zapisanych metod płatności",
+    "setDefault": "Ustaw jako domyślną",
+    "remove": "Usuń"
+  },
+  "transactions": {
+    "title": "Transakcje",
+    "empty": "Brak transakcji",
+    "pending": "Oczekująca",
+    "succeeded": "Zakończona",
+    "failed": "Nieudana",
+    "refunded": "Zwrócona"
+  }
+}

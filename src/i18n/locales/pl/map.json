@@ -1,0 +1,27 @@
+{
+  "search": {
+    "placeholder": "Wyszukaj lokalizację lub ID hulajnogi"
+  },
+  "filters": {
+    "all": "Wszystkie",
+    "nearest": "Najbliższe",
+    "battery": "Najlepsza bateria",
+    "cheapest": "Najtańsze"
+  },
+  "bestMatch": "Najlepsze dopasowanie",
+  "noScooters": "Brak dostępnych hulajnóg w pobliżu",
+  "loading": "Ładowanie hulajnóg...",
+  "geoOff": "Lokalizacja wyłączona — pokazuję wszystkie hulajnogi.",
+  "outstanding": "Masz nieopłaconą jazdę.",
+  "outstandingCta": "Opłać ją w Portfelu",
+  "outstandingSuffix": "przed kolejną jazdą.",
+  "addCardBanner": "Dodaj kartę płatniczą, aby rozpocząć jazdę.",
+  "addCardCta": "Dodaj kartę",
+  "recenter": "Wyśrodkuj mapę",
+  "selectScooter": "Wybierz hulajnogę",
+  "battery": "{{value}}%",
+  "distance": {
+    "meters": "{{value}} m",
+    "kilometers": "{{value}} km"
+  }
+}

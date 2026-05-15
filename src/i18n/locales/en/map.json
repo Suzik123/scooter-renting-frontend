@@ -1,0 +1,27 @@
+{
+  "search": {
+    "placeholder": "Search location or scooter ID"
+  },
+  "filters": {
+    "all": "All",
+    "nearest": "Nearest",
+    "battery": "Best Battery",
+    "cheapest": "Cheapest"
+  },
+  "bestMatch": "Best Match",
+  "noScooters": "No scooters available nearby",
+  "loading": "Loading scooters...",
+  "geoOff": "Location off — showing all scooters.",
+  "outstanding": "You have an unpaid ride.",
+  "outstandingCta": "Settle it in Wallet",
+  "outstandingSuffix": "before riding again.",
+  "addCardBanner": "Add a payment card to start riding.",
+  "addCardCta": "Add card",
+  "recenter": "Re-center map",
+  "selectScooter": "Select scooter",
+  "battery": "{{value}}%",
+  "distance": {
+    "meters": "{{value}} m",
+    "kilometers": "{{value}} km"
+  }
+}

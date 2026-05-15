@@ -1,0 +1,29 @@
+{
+  "title": "Wallet",
+  "balance": "Balance",
+  "addCard": "Add Card",
+  "addCardTitle": "Add Payment Card",
+  "preparingForm": "Preparing secure form...",
+  "cardholderName": "Cardholder Name",
+  "cardholderPlaceholder": "Name on card",
+  "saveCard": "Save Card",
+  "saving": "Saving...",
+  "cardAdded": "Card added",
+  "setupFailed": "Card setup did not complete. Please try again.",
+  "saveFailed": "Failed to save card",
+  "methods": {
+    "title": "Payment Methods",
+    "default": "Default",
+    "empty": "No payment methods yet",
+    "setDefault": "Set as default",
+    "remove": "Remove"
+  },
+  "transactions": {
+    "title": "Transactions",
+    "empty": "No transactions yet",
+    "pending": "Pending",
+    "succeeded": "Succeeded",
+    "failed": "Failed",
+    "refunded": "Refunded"
+  }
+}

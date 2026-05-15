@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { LogOut } from 'lucide-react';
 import Badge from '../ui/Badge';
 import Button from '../ui/Button';
@@ -20,14 +22,21 @@ function formatMemberSince(iso?: string): string {
 }
 
 export default function ProfileHeaderCard() {
+  const { t } = useTranslation(['profile', 'common']);
   const user = useAuthStore((s) => s.user);
   const logout = useAuthStore((s) => s.logout);
   const rides = useRideHistoryStore((s) => s.rides);
   const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login', { replace: true });
+  const handleLogout = async () => {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      await logout();
+    } finally {
+      navigate('/login', { replace: true });
+    }
   };
 
   if (!user) return null;
@@ -78,8 +87,9 @@ export default function ProfileHeaderCard() {
           variant="ghost"
           className="text-red-500 hover:bg-red-50 hover:text-red-600"
           onClick={handleLogout}
+          disabled={loggingOut}
         >
-          <LogOut size={16} className="mr-2" /> Log Out
+          <LogOut size={16} className="mr-2" /> {loggingOut ? t('profile:loggingOut') : t('profile:logout')}
         </Button>
       </div>
     </div>

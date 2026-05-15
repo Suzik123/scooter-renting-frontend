@@ -1,0 +1,32 @@
+{
+  "greeting": "Witaj ponownie, {{name}}",
+  "subtitle": "Gotowy na kolejną jazdę?",
+  "startRide": {
+    "title": "Znajdź hulajnogę w pobliżu",
+    "cta": "Rozpocznij jazdę"
+  },
+  "nearby": {
+    "title": "Hulajnogi w pobliżu",
+    "viewAll": "Zobacz wszystkie"
+  },
+  "stats": {
+    "rides": "Liczba przejazdów",
+    "distance": "Dystans",
+    "minutes": "Minuty",
+    "co2": "Zaoszczędzone CO₂"
+  },
+  "lastRide": {
+    "title": "Ostatnia jazda",
+    "noRides": "Brak jazd"
+  },
+  "plan": {
+    "title": "Aktywny plan",
+    "viewDetails": "Zobacz szczegóły"
+  },
+  "quickActions": {
+    "title": "Szybkie akcje",
+    "addCard": "Dodaj kartę",
+    "viewHistory": "Historia",
+    "support": "Wsparcie"
+  }
+}

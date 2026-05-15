@@ -1,25 +1,42 @@
+import { useEffect } from 'react';
 import { Navigation } from 'lucide-react';
-import MapPlaceholder from '../MapPlaceholder';
-
-const DOTS = [
-  { top: '25%', left: '35%' },
-  { top: '40%', left: '55%' },
-  { top: '30%', left: '70%' },
-  { top: '60%', left: '30%' },
-  { top: '50%', left: '48%' },
-  { top: '70%', left: '65%' },
-  { top: '20%', left: '50%' },
-];
+import { useTranslation } from 'react-i18next';
+import ScooterMap from '../map/ScooterMap';
+import { useScootersStore } from '../../stores/scootersStore';
+import { useZonesStore } from '../../stores/zonesStore';
 
 export default function MapCanvas() {
+  const { t } = useTranslation('map');
+  const scooters = useScootersStore((s) => s.scooters);
+  const selectedScooterId = useScootersStore((s) => s.selectedScooterId);
+  const selectScooter = useScootersStore((s) => s.selectScooter);
+  const userLocation = useScootersStore((s) => s.userLocation);
+  const zones = useZonesStore((s) => s.zones);
+  const loadZones = useZonesStore((s) => s.load);
+  const zonesLoaded = useZonesStore((s) => s.loaded);
+
+  useEffect(() => {
+    if (!zonesLoaded) void loadZones();
+  }, [zonesLoaded, loadZones]);
+
+  const userPosition = userLocation ? ([userLocation.lat, userLocation.lng] as [number, number]) : null;
+
   return (
     <div className="flex-1 relative order-1 lg:order-2 min-h-[200px] lg:min-h-0">
-      <MapPlaceholder className="w-full h-full rounded-none" scooterDots={DOTS} />
+      <ScooterMap
+        userLocation={userPosition}
+        scooters={scooters}
+        zones={zones}
+        selectedScooterId={selectedScooterId}
+        onScooterClick={selectScooter}
+        followUser
+      />
       <button
-        className="absolute bottom-4 right-4 w-10 h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors cursor-pointer"
-        aria-label="Re-center map"
+        type="button"
+        className="absolute bottom-4 right-4 z-[400] w-10 h-10 bg-[var(--color-bg-elevated)] rounded-full shadow-md flex items-center justify-center hover:bg-[var(--color-bg-muted)] transition-colors cursor-pointer text-[var(--color-text-secondary)]"
+        aria-label={t('recenter')}
       >
-        <Navigation size={18} className="text-slate-600" />
+        <Navigation size={18} />
       </button>
     </div>
   );

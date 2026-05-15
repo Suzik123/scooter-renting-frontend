@@ -1,0 +1,29 @@
+{
+  "title": "Profil",
+  "logout": "Wyloguj się",
+  "loggingOut": "Wylogowywanie...",
+  "ecoImpact": {
+    "title": "Wpływ ekologiczny",
+    "co2Saved": "Zaoszczędzone CO₂",
+    "trees": "Równowartość {{count}} drzew"
+  },
+  "favorite": {
+    "title": "Ulubiona hulajnoga",
+    "empty": "Wykonaj więcej jazd, aby odkryć ulubioną"
+  },
+  "settings": {
+    "account": "Ustawienia konta",
+    "personal": "Dane osobowe",
+    "security": "Bezpieczeństwo i prywatność",
+    "payments": "Metody płatności",
+    "notifications": "Powiadomienia",
+    "preferences": "Preferencje aplikacji",
+    "appearance": "Wygląd",
+    "language": "Język i region",
+    "location": "Ustawienia lokalizacji",
+    "support": "Wsparcie",
+    "helpCenter": "Centrum pomocy",
+    "contact": "Skontaktuj się z nami",
+    "terms": "Regulamin"
+  }
+}

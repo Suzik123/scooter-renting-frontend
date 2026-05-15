@@ -1,0 +1,46 @@
+{
+  "appName": "UniScoot",
+  "actions": {
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "close": "Zamknij",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "submit": "Wyślij",
+    "continue": "Kontynuuj",
+    "retry": "Spróbuj ponownie",
+    "loading": "Ładowanie...",
+    "pleaseWait": "Proszę czekać..."
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "map": "Znajdź hulajnogę",
+    "wallet": "Portfel",
+    "history": "Historia",
+    "profile": "Profil",
+    "settings": "Ustawienia",
+    "admin": "Administrator"
+  },
+  "errors": {
+    "generic": "Coś poszło nie tak",
+    "network": "Błąd sieci. Sprawdź połączenie.",
+    "forbidden": "Brak uprawnień do wykonania tej akcji.",
+    "unauthorized": "Sesja wygasła. Zaloguj się ponownie.",
+    "notFound": "Nie znaleziono"
+  },
+  "language": {
+    "label": "Język",
+    "en": "Angielski",
+    "pl": "Polski"
+  },
+  "theme": {
+    "label": "Motyw",
+    "light": "Jasny",
+    "dark": "Ciemny",
+    "system": "Systemowy"
+  },
+  "currency": {
+    "format": "{{amount}} {{currency}}"
+  }
+}

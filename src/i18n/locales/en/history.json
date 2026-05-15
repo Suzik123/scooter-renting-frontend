@@ -1,0 +1,34 @@
+{
+  "title": "Ride History",
+  "filters": {
+    "all": "All",
+    "thisWeek": "This Week",
+    "thisMonth": "This Month",
+    "thisYear": "This Year"
+  },
+  "empty": {
+    "title": "No rides yet",
+    "subtitle": "Your completed rides will appear here"
+  },
+  "stats": {
+    "totalRides": "Total Rides",
+    "totalDistance": "Total Distance",
+    "totalSpent": "Total Spent",
+    "totalMinutes": "Total Minutes"
+  },
+  "ride": {
+    "duration": "Duration",
+    "distance": "Distance",
+    "cost": "Cost",
+    "viewDetails": "View details"
+  },
+  "detail": {
+    "title": "Ride Details",
+    "route": "Route",
+    "stats": "Stats",
+    "cost": "Cost Breakdown",
+    "unlockFee": "Unlock Fee",
+    "perMinute": "Per Minute",
+    "total": "Total"
+  }
+}

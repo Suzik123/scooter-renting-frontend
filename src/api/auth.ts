@@ -34,3 +34,7 @@ export function oauthGoogle(idToken: string): Promise<AuthResponse> {
     auth: false,
   });
 }
+
+export function logout(): Promise<void> {
+  return request<void>('/api/auth/logout', { method: 'POST', noRetry: true });
+}
