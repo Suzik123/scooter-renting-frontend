@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import ProfileHeaderCard from '../components/sections/ProfileHeaderCard';
 import ProfileEcoImpact from '../components/sections/ProfileEcoImpact';
-import ProfileSettingsList from '../components/sections/ProfileSettingsList';
 import ProfileFavoriteScooter from '../components/sections/ProfileFavoriteScooter';
 import LocaleSwitcher from '../components/sections/LocaleSwitcher';
 import ThemeToggle from '../components/sections/ThemeToggle';
@@ -51,7 +50,6 @@ export default function ProfilePage() {
               </div>
             </div>
           </div>
-          <ProfileSettingsList />
           <ProfileFavoriteScooter />
         </div>
       </div>

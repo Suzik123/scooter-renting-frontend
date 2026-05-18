@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, CreditCard, MapPinOff } from 'lucide-react';
 import MapSearchBar from '../components/sections/MapSearchBar';
 import MapFilterPills from '../components/sections/MapFilterPills';
@@ -36,6 +36,7 @@ export default function MapPage() {
   const hasOutstanding = useActiveRideStore((s) => s.hasOutstanding);
   const clearFlags = useActiveRideStore((s) => s.clearFlags);
   const openAddCard = useUIStore((s) => s.openAddCard);
+  const navigate = useNavigate();
 
   useEffect(() => {
     let cancelled = false;
@@ -64,8 +65,8 @@ export default function MapPage() {
 
   return (
     <div className="h-[calc(100vh-4rem)] lg:h-screen flex flex-col lg:flex-row">
-      <div className="lg:w-80 lg:border-r lg:border-slate-200 bg-white flex flex-col z-10 order-2 lg:order-1">
-        <div className="p-4 border-b border-slate-100">
+      <div className="lg:w-80 lg:border-r lg:border-[var(--color-border)] bg-[var(--color-bg-elevated)] flex flex-col z-10 order-2 lg:order-1">
+        <div className="p-4 border-b border-[var(--color-border-muted)]">
           <MapSearchBar />
           <MapFilterPills />
         </div>
@@ -98,6 +99,7 @@ export default function MapPage() {
                 type="button"
                 onClick={() => {
                   clearFlags();
+                  navigate('/wallet');
                   openAddCard();
                 }}
                 className="ml-2 font-medium underline cursor-pointer"

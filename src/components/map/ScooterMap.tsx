@@ -70,6 +70,17 @@ export default function ScooterMap({
     return DEFAULT_CENTER;
   }, [center, userLocation]);
 
+  // De-duplicate zones by id so an upstream list with repeats never renders
+  // two overlapping circles at the same coordinates.
+  const uniqueZones = useMemo(() => {
+    const seen = new Set<string>();
+    return zones.filter((z) => {
+      if (seen.has(z.zone_id)) return false;
+      seen.add(z.zone_id);
+      return true;
+    });
+  }, [zones]);
+
   const markers = useMemo(
     () =>
       scooters.map((s) => {
@@ -114,7 +125,7 @@ export default function ScooterMap({
         />
         <MapRecenter center={userLocation ?? null} follow={followUser} />
         {showZones &&
-          zones.map((z) => (
+          uniqueZones.map((z) => (
             <Circle
               key={z.zone_id}
               center={[z.center_lat, z.center_lon]}

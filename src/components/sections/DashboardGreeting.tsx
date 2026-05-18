@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuthStore } from '../../stores/authStore';
 
 function getInitials(firstName?: string, lastName?: string): string {
@@ -8,6 +9,7 @@ function getInitials(firstName?: string, lastName?: string): string {
 }
 
 export default function DashboardGreeting() {
+  const { t } = useTranslation('dashboard');
   const user = useAuthStore((s) => s.user);
   const firstName = user?.first_name?.trim() || 'there';
   const initials = user ? getInitials(user.first_name, user.last_name) : '?';
@@ -15,10 +17,10 @@ export default function DashboardGreeting() {
   return (
     <div className="flex items-center justify-between mb-6">
       <div>
-        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
-          Good morning, {firstName}!
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">
+          {t('greeting', { name: firstName })}
         </h1>
-        <p className="text-sm text-slate-500">Ready for your next ride?</p>
+        <p className="text-sm text-[var(--color-text-muted)]">{t('subtitle')}</p>
       </div>
       <Link
         to="/profile"

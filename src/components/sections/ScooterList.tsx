@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import { useAvailableScooters, useScootersStore } from '../../stores/scootersStore';
 import ScooterListItem from './ScooterListItem';
 
 export default function ScooterList() {
+  const { t } = useTranslation('map');
   const available = useAvailableScooters();
   const loading = useScootersStore((s) => s.loading);
   const error = useScootersStore((s) => s.error);
@@ -14,10 +16,10 @@ export default function ScooterList() {
         {error && (
           <p className="text-xs text-red-600" role="alert">{error}</p>
         )}
-        <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+        <p className="text-xs font-medium text-[var(--color-text-muted)] uppercase tracking-wide">
           {loading && available.length === 0
-            ? 'Loading scooters...'
-            : `${available.length} scooters nearby`}
+            ? t('loading')
+            : t('scootersNearby', { count: available.length })}
         </p>
         {available.map((scooter) => (
           <ScooterListItem
@@ -28,7 +30,7 @@ export default function ScooterList() {
           />
         ))}
         {!loading && available.length === 0 && !error && (
-          <p className="text-sm text-slate-500">No scooters available right now.</p>
+          <p className="text-sm text-[var(--color-text-muted)]">{t('noScootersAvailable')}</p>
         )}
       </div>
     </div>

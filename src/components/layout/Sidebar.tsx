@@ -62,16 +62,6 @@ export default function Sidebar() {
             {t('nav.admin')}
           </NavLink>
         )}
-
-        <div className="pt-4">
-          <NavLink
-            to="/profile"
-            className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-muted)] hover:text-[var(--color-text-primary)] transition-colors"
-          >
-            <Settings size={20} />
-            {t('nav.settings')}
-          </NavLink>
-        </div>
       </nav>
 
       <div className="px-3 mb-3 space-y-2">

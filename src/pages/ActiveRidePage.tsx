@@ -4,7 +4,6 @@ import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import RideTimerCard from '../components/sections/RideTimerCard';
 import ActiveRideScooterCard from '../components/sections/ActiveRideScooterCard';
-import RideMapCard from '../components/sections/RideMapCard';
 import { useActiveRideStore } from '../stores/activeRideStore';
 import { useUIStore } from '../stores/uiStore';
 
@@ -37,25 +36,28 @@ export default function ActiveRidePage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
-      <div className="grid lg:grid-cols-2 gap-6">
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <Badge variant="success" className="animate-pulse text-sm px-4 py-1.5">
-              RIDE ACTIVE
-            </Badge>
-            <span className="text-xs text-slate-500">Scooter {ride.scooter_id}</span>
-          </div>
-
-          <RideTimerCard />
-          <ActiveRideScooterCard />
-
-          <Button variant="danger" fullWidth size="lg" className="text-base" onClick={handleEndRide} disabled={loading}>
-            {loading ? 'Ending...' : 'End Ride'}
-          </Button>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-xl mx-auto">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <Badge variant="success" className="animate-pulse text-sm px-4 py-1.5">
+            RIDE ACTIVE
+          </Badge>
+          <span className="text-xs text-[var(--color-text-muted)]">Scooter {ride.scooter_id}</span>
         </div>
 
-        <RideMapCard variant="active" />
+        <RideTimerCard />
+        <ActiveRideScooterCard />
+
+        <Button
+          variant="danger"
+          fullWidth
+          size="lg"
+          className="text-base"
+          onClick={handleEndRide}
+          disabled={loading}
+        >
+          {loading ? 'Ending...' : 'End Ride'}
+        </Button>
       </div>
     </div>
   );

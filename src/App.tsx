@@ -20,6 +20,7 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const ActiveRidePage = lazy(() => import('./pages/ActiveRidePage'));
 const RideCompletePage = lazy(() => import('./pages/RideCompletePage'));
 const OfflinePaymentsPage = lazy(() => import('./pages/admin/OfflinePaymentsPage'));
+const LegalPage = lazy(() => import('./pages/LegalPage'));
 
 export default function App() {
   useTheme();
@@ -41,6 +42,9 @@ export default function App() {
         {/* No layout */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/legal/privacy" element={<LegalPage kind="privacy" />} />
+        <Route path="/legal/terms" element={<LegalPage kind="terms" />} />
+        <Route path="/legal/cookies" element={<LegalPage kind="cookies" />} />
 
         {/* Authenticated app routes */}
         <Route element={<ProtectedRoute />}>
