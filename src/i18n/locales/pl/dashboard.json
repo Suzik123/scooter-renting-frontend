@@ -3,30 +3,47 @@
   "subtitle": "Gotowy na kolejną jazdę?",
   "startRide": {
     "title": "Znajdź hulajnogę w pobliżu",
-    "cta": "Rozpocznij jazdę"
+    "cta": "Rozpocznij jazdę",
+    "ready": "Gotowy do jazdy?",
+    "startTitle": "Rozpocznij jazdę",
+    "scootersNearby": "{{count}} hulajnóg w pobliżu",
+    "rideInProgress": "Jazda w trakcie",
+    "resume": "Wznów aktywną jazdę"
   },
   "nearby": {
     "title": "Hulajnogi w pobliżu",
-    "viewAll": "Zobacz wszystkie"
+    "viewAll": "Zobacz wszystkie",
+    "viewMap": "Zobacz mapę"
   },
   "stats": {
     "rides": "Liczba przejazdów",
+    "timeRiding": "Czas jazdy",
     "distance": "Dystans",
     "minutes": "Minuty",
-    "co2": "Zaoszczędzone CO₂"
+    "totalSpent": "Łącznie wydane",
+    "co2": "Zaoszczędzone CO₂",
+    "co2Saved": "Zaoszczędzone CO2"
   },
   "lastRide": {
     "title": "Ostatnia jazda",
-    "noRides": "Brak jazd"
+    "viewAll": "Zobacz wszystkie",
+    "noRides": "Brak jazd.",
+    "ridePrefix": "Jazda {{id}}"
   },
   "plan": {
     "title": "Aktywny plan",
-    "viewDetails": "Zobacz szczegóły"
+    "viewDetails": "Zobacz szczegóły",
+    "active": "Aktywny plan",
+    "payAsYouGo": "Płać za przejazd",
+    "minutesRemaining": "Pozostało {{count}} min dzisiaj"
   },
   "quickActions": {
     "title": "Szybkie akcje",
     "addCard": "Dodaj kartę",
     "viewHistory": "Historia",
-    "support": "Wsparcie"
+    "support": "Wsparcie",
+    "findScooter": "Znajdź hulajnogę",
+    "rideHistory": "Historia jazd",
+    "wallet": "Portfel"
   }
 }

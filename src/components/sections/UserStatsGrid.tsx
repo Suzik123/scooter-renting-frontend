@@ -1,4 +1,5 @@
 import { Bike, Clock, DollarSign, Leaf } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import StatCard from '../ui/StatCard';
 import {
   useRideHistoryStore,
@@ -16,6 +17,7 @@ function formatTotalTime(seconds: number): string {
 }
 
 export default function UserStatsGrid() {
+  const { t } = useTranslation('dashboard');
   const rides = useRideHistoryStore((s) => s.rides);
 
   const totalSeconds = rides.reduce((sum, r) => sum + rentalDurationSeconds(r), 0);
@@ -25,10 +27,10 @@ export default function UserStatsGrid() {
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <StatCard icon={<Bike size={18} />} label="Total Rides" value={String(rides.length)} />
-      <StatCard icon={<Clock size={18} />} label="Time Riding" value={formatTotalTime(totalSeconds)} />
-      <StatCard icon={<DollarSign size={18} />} label="Total Spent" value={`$${totalSpent.toFixed(2)}`} />
-      <StatCard icon={<Leaf size={18} />} label="CO2 Saved" value={`${co2Saved.toFixed(1)} kg`} />
+      <StatCard icon={<Bike size={18} />} label={t('stats.rides')} value={String(rides.length)} />
+      <StatCard icon={<Clock size={18} />} label={t('stats.timeRiding')} value={formatTotalTime(totalSeconds)} />
+      <StatCard icon={<DollarSign size={18} />} label={t('stats.totalSpent')} value={`$${totalSpent.toFixed(2)}`} />
+      <StatCard icon={<Leaf size={18} />} label={t('stats.co2Saved')} value={`${co2Saved.toFixed(1)} kg`} />
     </div>
   );
 }

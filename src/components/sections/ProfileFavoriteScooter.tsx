@@ -1,7 +1,9 @@
 import { Bike } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useRideHistoryStore } from '../../stores/rideHistoryStore';
 
 export default function ProfileFavoriteScooter() {
+  const { t } = useTranslation('profile');
   const rides = useRideHistoryStore((s) => s.rides);
   const counts = new Map<string, number>();
   for (const r of rides) {
@@ -15,7 +17,7 @@ export default function ProfileFavoriteScooter() {
       topId = id;
     }
   }
-  const label = topId ? topId : 'No favorite yet';
+  const label = topId ? topId : t('favorite.empty');
 
   return (
     <div className="lg:hidden bg-white rounded-xl shadow-sm border border-slate-100 p-4">
@@ -24,7 +26,7 @@ export default function ProfileFavoriteScooter() {
           <Bike size={20} className="text-primary" />
         </div>
         <div>
-          <p className="text-xs text-slate-500">Favorite Scooter</p>
+          <p className="text-xs text-slate-500">{t('favorite.title')}</p>
           <p className="font-semibold text-sm text-slate-900">{label}</p>
         </div>
       </div>

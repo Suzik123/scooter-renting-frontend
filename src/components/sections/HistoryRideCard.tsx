@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Clock, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Rental } from '../../types';
 import Badge from '../ui/Badge';
 import {
@@ -14,7 +15,11 @@ interface HistoryRideCardProps {
 }
 
 export default function HistoryRideCard({ ride }: HistoryRideCardProps) {
+  const { t } = useTranslation(['history', 'common']);
   const duration = formatDurationLabel(rentalDurationSeconds(ride));
+  const statusLabel = t(`common:status.${ride.status}`, {
+    defaultValue: ride.status,
+  });
 
   return (
     <Link
@@ -46,7 +51,7 @@ export default function HistoryRideCard({ ride }: HistoryRideCardProps) {
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between mb-1">
             <p className="font-medium text-sm text-slate-900 truncate">
-              Ride {ride.rental_id.slice(0, 8)}
+              {t('history:ride.ridePrefix', { id: ride.rental_id.slice(0, 8) })}
             </p>
             <span className="text-sm font-semibold text-slate-900 ml-2 flex-shrink-0">
               {formatCost(ride.total_cost)}
@@ -57,7 +62,7 @@ export default function HistoryRideCard({ ride }: HistoryRideCardProps) {
             <span className="flex items-center gap-1"><MapPin size={12} /> {formatDistance(ride.distance_m)}</span>
           </div>
           <div className="flex items-center justify-end">
-            <Badge variant={ride.status === 'completed' ? 'success' : 'default'}>{ride.status}</Badge>
+            <Badge variant={ride.status === 'completed' ? 'success' : 'default'}>{statusLabel}</Badge>
           </div>
         </div>
       </div>

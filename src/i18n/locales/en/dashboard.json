@@ -3,30 +3,47 @@
   "subtitle": "Ready for your next ride?",
   "startRide": {
     "title": "Find a scooter near you",
-    "cta": "Start riding"
+    "cta": "Start riding",
+    "ready": "Ready to ride?",
+    "startTitle": "Start a Ride",
+    "scootersNearby": "{{count}} scooters nearby",
+    "rideInProgress": "Ride in progress",
+    "resume": "Resume Active Ride"
   },
   "nearby": {
     "title": "Nearby Scooters",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "viewMap": "View Map"
   },
   "stats": {
     "rides": "Total Rides",
+    "timeRiding": "Time Riding",
     "distance": "Distance",
     "minutes": "Minutes",
-    "co2": "CO₂ saved"
+    "totalSpent": "Total Spent",
+    "co2": "CO₂ saved",
+    "co2Saved": "CO2 Saved"
   },
   "lastRide": {
     "title": "Last Ride",
-    "noRides": "No rides yet"
+    "viewAll": "View All",
+    "noRides": "No rides yet.",
+    "ridePrefix": "Ride {{id}}"
   },
   "plan": {
     "title": "Active Plan",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "active": "Active Plan",
+    "payAsYouGo": "Pay-as-you-go",
+    "minutesRemaining": "{{count}} min remaining today"
   },
   "quickActions": {
     "title": "Quick Actions",
     "addCard": "Add card",
     "viewHistory": "View history",
-    "support": "Support"
+    "support": "Support",
+    "findScooter": "Find a Scooter",
+    "rideHistory": "Ride History",
+    "wallet": "Wallet"
   }
 }

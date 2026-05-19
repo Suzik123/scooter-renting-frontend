@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { Bike, PlayCircle } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useAvailableScooters } from '../../stores/scootersStore';
 import { useActiveRideStore } from '../../stores/activeRideStore';
 
 export default function StartRideBanner() {
+  const { t } = useTranslation('dashboard');
   const available = useAvailableScooters();
   const activeRide = useActiveRideStore((s) => s.activeRide);
 
@@ -15,8 +17,8 @@ export default function StartRideBanner() {
       >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-white/80 mb-1">Ride in progress</p>
-            <h2 className="text-lg sm:text-xl font-bold mb-1">Resume Active Ride</h2>
+            <p className="text-sm text-white/80 mb-1">{t('startRide.rideInProgress')}</p>
+            <h2 className="text-lg sm:text-xl font-bold mb-1">{t('startRide.resume')}</h2>
             <p className="text-sm text-white/80">{activeRide.scooter_label} · {activeRide.scooter_id}</p>
           </div>
           <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
@@ -34,9 +36,9 @@ export default function StartRideBanner() {
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-white/80 mb-1">Ready to ride?</p>
-          <h2 className="text-lg sm:text-xl font-bold mb-1">Start a Ride</h2>
-          <p className="text-sm text-white/80">{available.length} scooters nearby</p>
+          <p className="text-sm text-white/80 mb-1">{t('startRide.ready')}</p>
+          <h2 className="text-lg sm:text-xl font-bold mb-1">{t('startRide.startTitle')}</h2>
+          <p className="text-sm text-white/80">{t('startRide.scootersNearby', { count: available.length })}</p>
         </div>
         <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
           <Bike size={24} />

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import type { Rental } from '../../types';
 import { formatCost } from '../../stores/rideHistoryStore';
 import { formatLatLng } from '../../lib/decimal';
@@ -7,12 +8,13 @@ interface RideDetailRouteInfoProps {
 }
 
 export default function RideDetailRouteInfo({ ride }: RideDetailRouteInfoProps) {
+  const { t } = useTranslation('history');
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-5 mb-4">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <p className="font-semibold text-slate-900">Ride {ride.rental_id.slice(0, 8)}</p>
-          <p className="text-sm text-slate-500">Scooter {ride.scooter_id}</p>
+          <p className="font-semibold text-slate-900">{t('ride.ridePrefix', { id: ride.rental_id.slice(0, 8) })}</p>
+          <p className="text-sm text-slate-500">{t('detail.scooterPrefix', { id: ride.scooter_id })}</p>
         </div>
         <span className="text-xl font-bold text-slate-900">{formatCost(ride.total_cost)}</span>
       </div>
@@ -25,11 +27,11 @@ export default function RideDetailRouteInfo({ ride }: RideDetailRouteInfoProps) 
         </div>
         <div className="flex-1 space-y-4">
           <div>
-            <p className="text-sm font-medium text-slate-900">Start</p>
+            <p className="text-sm font-medium text-slate-900">{t('detail.start')}</p>
             <p className="text-xs text-slate-500">{formatLatLng(ride.start_lat, ride.start_lon)}</p>
           </div>
           <div>
-            <p className="text-sm font-medium text-slate-900">End</p>
+            <p className="text-sm font-medium text-slate-900">{t('detail.end')}</p>
             <p className="text-xs text-slate-500">{formatLatLng(ride.end_lat, ride.end_lon)}</p>
           </div>
         </div>

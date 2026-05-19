@@ -13,17 +13,28 @@
   "saveFailed": "Failed to save card",
   "methods": {
     "title": "Payment Methods",
+    "add": "Add",
     "default": "Default",
-    "empty": "No payment methods yet",
+    "empty": "No saved cards yet. Add a card to start riding.",
+    "emptyShort": "No payment methods yet",
+    "loading": "Loading...",
     "setDefault": "Set as default",
-    "remove": "Remove"
+    "remove": "Remove",
+    "removeAria": "Remove {{label}} ending in {{last4}}",
+    "expPrefix": "Exp",
+    "fallbackBrand": "Card"
   },
   "transactions": {
-    "title": "Transactions",
-    "empty": "No transactions yet",
+    "title": "Recent Transactions",
+    "empty": "No transactions yet.",
+    "loading": "Loading...",
     "pending": "Pending",
     "succeeded": "Succeeded",
     "failed": "Failed",
-    "refunded": "Refunded"
+    "refunded": "Refunded",
+    "pendingSuffix": "pending",
+    "refundedSuffix": "refunded",
+    "ridePrefix": "Ride · {{id}}",
+    "payment": "Payment"
   }
 }

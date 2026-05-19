@@ -1,21 +1,38 @@
 {
   "active": {
     "title": "Active Ride",
+    "badge": "RIDE ACTIVE",
+    "scooterPrefix": "Scooter {{id}}",
     "duration": "Ride Duration",
     "currentCost": "Current Cost:",
-    "endRide": "End ride",
+    "endRide": "End Ride",
     "speed": "km/h",
-    "ending": "Ending..."
+    "ending": "Ending...",
+    "battery": "Battery",
+    "endedToast": "Ride ended",
+    "endFailedToast": "Failed to end ride"
   },
   "complete": {
     "title": "Ride Complete",
-    "summary": "Ride Summary",
+    "paymentFailed": "Payment Failed",
+    "confirming": "Confirming payment...",
+    "cardChargeFailed": "We could not charge your card.",
+    "summary": "Great ride! Here's your summary.",
+    "summaryTitle": "Ride Summary",
     "duration": "Duration",
     "distance": "Distance",
+    "avgSpeed": "Avg Speed",
+    "co2Saved": "CO2 Saved",
     "cost": "Total Cost",
+    "totalCost": "Total Cost",
     "rate": "Rate this ride",
-    "done": "Done",
-    "viewReceipt": "View Receipt"
+    "done": "Done - Back to Map",
+    "shareRide": "Share Ride",
+    "updateCard": "Update card in Wallet",
+    "viewReceipt": "View Receipt",
+    "noCompletedRide": "No completed ride to show.",
+    "backToMap": "Back to map",
+    "ridePrefix": "Ride {{id}}"
   },
   "confirm": {
     "title": "End ride?",
@@ -27,7 +44,9 @@
     "pending": "Payment pending",
     "succeeded": "Payment succeeded",
     "failed": "Payment failed",
-    "failureReason": "Reason: {{reason}}"
+    "failureReason": "Reason: {{reason}}",
+    "genericFailed": "Payment failed",
+    "statusFallback": "Payment status: {{status}}"
   },
   "admin": {
     "title": "Offline Payment Approval",

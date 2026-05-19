@@ -1,21 +1,38 @@
 {
   "active": {
     "title": "Aktywna jazda",
+    "badge": "JAZDA AKTYWNA",
+    "scooterPrefix": "Hulajnoga {{id}}",
     "duration": "Czas jazdy",
-    "currentCost": "Bieżący koszt:",
+    "currentCost": "Aktualny koszt:",
     "endRide": "Zakończ jazdę",
     "speed": "km/h",
-    "ending": "Kończenie..."
+    "ending": "Kończenie...",
+    "battery": "Bateria",
+    "endedToast": "Jazda zakończona",
+    "endFailedToast": "Nie udało się zakończyć jazdy"
   },
   "complete": {
     "title": "Jazda zakończona",
-    "summary": "Podsumowanie jazdy",
+    "paymentFailed": "Płatność nieudana",
+    "confirming": "Potwierdzanie płatności...",
+    "cardChargeFailed": "Nie mogliśmy obciążyć Twojej karty.",
+    "summary": "Świetna jazda! Oto Twoje podsumowanie.",
+    "summaryTitle": "Podsumowanie jazdy",
     "duration": "Czas trwania",
     "distance": "Dystans",
+    "avgSpeed": "Śr. prędkość",
+    "co2Saved": "Zaoszczędzone CO2",
     "cost": "Łączny koszt",
+    "totalCost": "Łączny koszt",
     "rate": "Oceń tę jazdę",
-    "done": "Gotowe",
-    "viewReceipt": "Zobacz paragon"
+    "done": "Gotowe — wróć do mapy",
+    "shareRide": "Udostępnij jazdę",
+    "updateCard": "Zaktualizuj kartę w Portfelu",
+    "viewReceipt": "Zobacz paragon",
+    "noCompletedRide": "Brak zakończonej jazdy do wyświetlenia.",
+    "backToMap": "Powrót do mapy",
+    "ridePrefix": "Jazda {{id}}"
   },
   "confirm": {
     "title": "Zakończyć jazdę?",
@@ -25,9 +42,11 @@
   },
   "payment": {
     "pending": "Płatność oczekująca",
-    "succeeded": "Płatność zakończona",
+    "succeeded": "Płatność zrealizowana",
     "failed": "Płatność nieudana",
-    "failureReason": "Powód: {{reason}}"
+    "failureReason": "Powód: {{reason}}",
+    "genericFailed": "Płatność nieudana",
+    "statusFallback": "Status płatności: {{status}}"
   },
   "admin": {
     "title": "Zatwierdzanie płatności offline",

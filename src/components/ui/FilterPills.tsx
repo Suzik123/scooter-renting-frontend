@@ -6,6 +6,7 @@ interface FilterPillsProps<T extends string> {
   onChange: (value: T) => void;
   ariaLabel: string;
   className?: string;
+  labelFor?: (option: T) => string;
 }
 
 export default function FilterPills<T extends string>({
@@ -14,6 +15,7 @@ export default function FilterPills<T extends string>({
   onChange,
   ariaLabel,
   className,
+  labelFor,
 }: FilterPillsProps<T>) {
   return (
     <div
@@ -32,7 +34,7 @@ export default function FilterPills<T extends string>({
             value === opt ? 'bg-primary text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200',
           )}
         >
-          {opt}
+          {labelFor ? labelFor(opt) : opt}
         </button>
       ))}
     </div>

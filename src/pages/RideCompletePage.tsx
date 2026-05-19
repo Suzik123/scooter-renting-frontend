@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
+import { useTranslation } from 'react-i18next';
 import RideMapCard from '../components/sections/RideMapCard';
 import RideCompleteSummary from '../components/sections/RideCompleteSummary';
 import RideCompleteActions from '../components/sections/RideCompleteActions';
@@ -24,6 +25,7 @@ export default function RideCompletePage() {
 }
 
 function RideCompletePageInner() {
+  const { t } = useTranslation(['ride', 'common']);
   const rental = useActiveRideStore((s) => s.finishedRental);
   const payment = useActiveRideStore((s) => s.finishedPayment);
   const clearFinished = useActiveRideStore((s) => s.clearFinished);
@@ -57,25 +59,25 @@ function RideCompletePageInner() {
         if (cancelled) return;
         if (res.error) {
           setConfirmStatus('failed');
-          setConfirmError(res.error.message ?? 'Payment failed');
+          setConfirmError(res.error.message ?? t('ride:payment.genericFailed'));
           return;
         }
         if (res.paymentIntent?.status === 'succeeded') {
           setConfirmStatus('succeeded');
         } else {
           setConfirmStatus('failed');
-          setConfirmError(`Payment status: ${res.paymentIntent?.status ?? 'unknown'}`);
+          setConfirmError(t('ride:payment.statusFallback', { status: res.paymentIntent?.status ?? 'unknown' }));
         }
       })
       .catch((e) => {
         if (cancelled) return;
         setConfirmStatus('failed');
-        setConfirmError(e instanceof Error ? e.message : 'Payment failed');
+        setConfirmError(e instanceof Error ? e.message : t('ride:payment.genericFailed'));
       });
     return () => {
       cancelled = true;
     };
-  }, [payment, stripe]);
+  }, [payment, stripe, t]);
 
   useEffect(() => {
     if (confirmStatus === 'succeeded' || confirmStatus === 'failed' || confirmStatus === 'idle') {
@@ -92,8 +94,8 @@ function RideCompletePageInner() {
   if (!rental || !payment) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 max-w-3xl mx-auto">
-        <p className="text-sm text-slate-500">No completed ride to show.</p>
-        <Link to="/map" className="text-sm text-primary hover:underline">Back to map</Link>
+        <p className="text-sm text-slate-500">{t('ride:complete.noCompletedRide')}</p>
+        <Link to="/map" className="text-sm text-primary hover:underline">{t('ride:complete.backToMap')}</Link>
       </div>
     );
   }
@@ -105,7 +107,7 @@ function RideCompletePageInner() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-5xl mx-auto">
       <div className="grid lg:grid-cols-2 gap-6">
-        <RideMapCard variant="complete" routeLabel={`Ride ${rental.rental_id}`} />
+        <RideMapCard variant="complete" routeLabel={t('ride:complete.ridePrefix', { id: rental.rental_id })} />
 
         <div className="space-y-6">
           <div className="text-center lg:text-left">
@@ -119,25 +121,25 @@ function RideCompletePageInner() {
               <Loader2 size={48} className="text-primary mx-auto lg:mx-0 mb-3 animate-spin" />
             )}
             <h1 className="text-2xl font-bold text-slate-900 mb-1">
-              {confirmStatus === 'failed' ? 'Payment Failed' : 'Ride Complete'}
+              {confirmStatus === 'failed' ? t('ride:complete.paymentFailed') : t('ride:complete.title')}
             </h1>
             <p className="text-sm text-slate-500">
               {confirmStatus === 'confirming'
-                ? 'Confirming payment...'
+                ? t('ride:complete.confirming')
                 : confirmStatus === 'failed'
-                  ? confirmError ?? 'We could not charge your card.'
-                  : 'Great ride! Here\'s your summary.'}
+                  ? confirmError ?? t('ride:complete.cardChargeFailed')
+                  : t('ride:complete.summary')}
             </p>
           </div>
 
           <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-6 text-center">
-            <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">Total Cost</p>
+            <p className="text-xs text-slate-500 uppercase tracking-wide mb-1">{t('ride:complete.totalCost')}</p>
             <p className="text-4xl font-bold text-slate-900 mb-2">{totalLabel}</p>
-            {confirmStatus === 'succeeded' && <Badge variant="success">Paid</Badge>}
-            {confirmStatus === 'confirming' && <Badge variant="default">Confirming...</Badge>}
-            {confirmStatus === 'failed' && <Badge variant="error">Failed</Badge>}
+            {confirmStatus === 'succeeded' && <Badge variant="success">{t('common:status.paid')}</Badge>}
+            {confirmStatus === 'confirming' && <Badge variant="default">{t('common:status.confirming')}</Badge>}
+            {confirmStatus === 'failed' && <Badge variant="error">{t('common:status.failed')}</Badge>}
             {confirmStatus === 'idle' && payment.status === 'failed' && (
-              <Badge variant="error">Failed</Badge>
+              <Badge variant="error">{t('common:status.failed')}</Badge>
             )}
           </div>
 
@@ -149,7 +151,7 @@ function RideCompletePageInner() {
               onClick={() => navigate('/wallet')}
               className="w-full bg-red-50 border border-red-200 text-red-700 rounded-xl py-3 text-sm font-medium hover:bg-red-100 transition-colors"
             >
-              Update card in Wallet
+              {t('ride:complete.updateCard')}
             </button>
           )}
 

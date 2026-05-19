@@ -1,24 +1,34 @@
+import { useTranslation } from 'react-i18next';
 import HistoryRideRow from './HistoryRideRow';
 import HistoryFilterPills from './HistoryFilterPills';
 import HistoryEmptyState from './HistoryEmptyState';
 import { useFilteredRides, useRideHistoryStore } from '../../stores/rideHistoryStore';
 
-const COLUMNS = ['Ride', 'Scooter', 'Date', 'Duration', 'Distance', 'Cost', 'Status'];
-
 export default function HistoryRidesTable() {
+  const { t } = useTranslation('history');
   const filteredRides = useFilteredRides();
   const loading = useRideHistoryStore((s) => s.loading);
+
+  const columns = [
+    t('table.columns.ride'),
+    t('table.columns.scooter'),
+    t('table.columns.date'),
+    t('table.columns.duration'),
+    t('table.columns.distance'),
+    t('table.columns.cost'),
+    t('table.columns.status'),
+  ];
 
   return (
     <div className="hidden lg:block bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
       <div className="flex items-center justify-between p-4 border-b border-slate-100">
-        <h3 className="font-semibold text-slate-900">All Rides</h3>
+        <h3 className="font-semibold text-slate-900">{t('table.allRides')}</h3>
         <HistoryFilterPills />
       </div>
       <table className="w-full">
         <thead>
           <tr className="border-b border-slate-100 text-left">
-            {COLUMNS.map((col) => (
+            {columns.map((col) => (
               <th key={col} className="px-4 py-3 text-xs font-medium text-slate-500 uppercase">
                 {col}
               </th>
@@ -34,7 +44,7 @@ export default function HistoryRidesTable() {
           {loading && filteredRides.length === 0 && (
             <tr>
               <td colSpan={8} className="px-4 py-8 text-center text-sm text-slate-500">
-                Loading rides...
+                {t('ride.loading')}
               </td>
             </tr>
           )}

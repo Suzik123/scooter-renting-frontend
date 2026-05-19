@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Bike } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import IconTile from '../ui/IconTile';
 import SectionHeader from '../ui/SectionHeader';
 import {
@@ -11,16 +12,17 @@ import {
 } from '../../stores/rideHistoryStore';
 
 export default function LastRideCard() {
+  const { t } = useTranslation('dashboard');
   const lastRide = useLastRide();
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 p-4 sm:p-5">
       <SectionHeader
-        title="Last Ride"
+        title={t('lastRide.title')}
         className="mb-4"
         action={
           <Link to="/history" className="text-sm text-primary font-medium hover:underline">
-            View All
+            {t('lastRide.viewAll')}
           </Link>
         }
       />
@@ -34,7 +36,7 @@ export default function LastRideCard() {
               <Bike size={20} className="text-primary" />
             </IconTile>
             <div className="flex-1 min-w-0">
-              <p className="font-medium text-slate-900 text-sm">Ride {lastRide.rental_id.slice(0, 8)}</p>
+              <p className="font-medium text-slate-900 text-sm">{t('lastRide.ridePrefix', { id: lastRide.rental_id.slice(0, 8) })}</p>
               <p className="text-xs text-slate-500">
                 {formatDurationLabel(rentalDurationSeconds(lastRide))} · {formatDistance(lastRide.distance_m)}
               </p>
@@ -45,7 +47,7 @@ export default function LastRideCard() {
           </div>
         </Link>
       ) : (
-        <p className="text-sm text-slate-500">No rides yet.</p>
+        <p className="text-sm text-slate-500">{t('lastRide.noRides')}</p>
       )}
     </div>
   );

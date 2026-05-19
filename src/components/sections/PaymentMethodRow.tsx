@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { CreditCard, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { PaymentMethod } from '../../types';
 import IconTile from '../ui/IconTile';
 
@@ -21,9 +22,9 @@ const BRAND_LABEL: Record<string, string> = {
   unionpay: 'UnionPay',
 };
 
-function brandLabel(brand: string): string {
+function brandLabel(brand: string, fallback: string): string {
   const key = brand?.toLowerCase() ?? '';
-  return BRAND_LABEL[key] ?? (brand ? brand.charAt(0).toUpperCase() + brand.slice(1) : 'Card');
+  return BRAND_LABEL[key] ?? (brand ? brand.charAt(0).toUpperCase() + brand.slice(1) : fallback);
 }
 
 function pad2(n: number): string {
@@ -37,7 +38,8 @@ export default function PaymentMethodRow({
   selectable = false,
   removing = false,
 }: PaymentMethodRowProps) {
-  const label = brandLabel(method.brand);
+  const { t } = useTranslation('wallet');
+  const label = brandLabel(method.brand, t('methods.fallbackBrand'));
   const expYearShort = method.exp_year > 99 ? method.exp_year % 100 : method.exp_year;
 
   const content = (
@@ -50,10 +52,10 @@ export default function PaymentMethodRow({
           {label} <span className="text-slate-500">•••• {method.last4}</span>
         </p>
         <p className="text-xs text-slate-500">
-          Exp {pad2(method.exp_month)}/{pad2(expYearShort)}
+          {t('methods.expPrefix')} {pad2(method.exp_month)}/{pad2(expYearShort)}
         </p>
       </div>
-      {method.is_default && <span className="text-xs text-primary font-medium">Default</span>}
+      {method.is_default && <span className="text-xs text-primary font-medium">{t('methods.default')}</span>}
     </>
   );
 
@@ -80,7 +82,7 @@ export default function PaymentMethodRow({
           onClick={() => onRemove(method.id)}
           disabled={removing}
           className="text-slate-400 hover:text-red-500 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-          aria-label={`Remove ${label} ending in ${method.last4}`}
+          aria-label={t('methods.removeAria', { label, last4: method.last4 })}
         >
           <Trash2 size={16} />
         </button>

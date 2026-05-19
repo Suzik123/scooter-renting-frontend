@@ -11,6 +11,7 @@ interface ScootersState {
   selectedScooterId: string | null;
   filter: ScooterFilter;
   userLocation: { lat: number; lng: number } | null;
+  recenterAt: number;
   loading: boolean;
   error: string | null;
   geoDenied: boolean;
@@ -18,6 +19,8 @@ interface ScootersState {
   selectScooter: (id: string) => void;
   setFilter: (f: ScooterFilter) => void;
   setGeoDenied: (denied: boolean) => void;
+  setUserLocation: (loc: { lat: number; lng: number } | null) => void;
+  requestRecenter: () => void;
 }
 
 function toErrorMessage(e: unknown, fallback: string): string {
@@ -35,6 +38,7 @@ export const useScootersStore = create<ScootersState>((set, get) => ({
   selectedScooterId: null,
   filter: 'All',
   userLocation: null,
+  recenterAt: 0,
   loading: false,
   error: null,
   geoDenied: false,
@@ -66,6 +70,8 @@ export const useScootersStore = create<ScootersState>((set, get) => ({
   selectScooter: (id) => set({ selectedScooterId: id }),
   setFilter: (f) => set({ filter: f }),
   setGeoDenied: (denied) => set({ geoDenied: denied }),
+  setUserLocation: (loc) => set({ userLocation: loc }),
+  requestRecenter: () => set({ recenterAt: Date.now() }),
 }));
 
 function distanceMeters(

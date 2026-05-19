@@ -22,6 +22,8 @@
   "selectScooter": "Select scooter",
   "scootersNearby": "{{count}} scooters nearby",
   "available": "Available",
+  "scooterFallback": "Scooter {{id}}",
+  "idPrefix": "ID:",
   "unlock": "Unlock & Ride",
   "unlocking": "Unlocking...",
   "addCardToRide": "Add a card to ride",

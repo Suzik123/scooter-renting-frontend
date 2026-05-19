@@ -1,17 +1,19 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import MapPlaceholder from '../MapPlaceholder';
 import SectionHeader from '../ui/SectionHeader';
 
 export default function NearbyScootersPreview() {
+  const { t } = useTranslation('dashboard');
   return (
     <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
       <SectionHeader
-        title="Nearby Scooters"
+        title={t('nearby.title')}
         className="p-4 pb-0"
         action={
           <Link to="/map" className="text-sm text-primary font-medium flex items-center gap-1 hover:underline">
-            View Map <ArrowRight size={14} />
+            {t('nearby.viewMap')} <ArrowRight size={14} />
           </Link>
         }
       />

@@ -3,32 +3,72 @@
   "filters": {
     "all": "Wszystkie",
     "thisWeek": "Ten tydzień",
+    "lastWeek": "Poprzedni tydzień",
     "thisMonth": "Ten miesiąc",
-    "thisYear": "Ten rok"
+    "thisYear": "Ten rok",
+    "ariaLabel": "Filtr jazd"
+  },
+  "groups": {
+    "Today": "Dzisiaj",
+    "Yesterday": "Wczoraj",
+    "This Week": "Ten tydzień",
+    "Last Week": "Poprzedni tydzień",
+    "This Month": "Ten miesiąc",
+    "Older": "Starsze"
   },
   "empty": {
     "title": "Brak jazd",
-    "subtitle": "Twoje zakończone jazdy pojawią się tutaj"
+    "subtitle": "Twoje ukończone jazdy pojawią się tutaj",
+    "noMatch": "Żadne jazdy nie pasują do filtra."
   },
   "stats": {
-    "totalRides": "Łączna liczba jazd",
+    "totalRides": "Liczba przejazdów",
     "totalDistance": "Łączny dystans",
     "totalSpent": "Łącznie wydane",
-    "totalMinutes": "Łączne minuty"
+    "totalMinutes": "Łączny czas",
+    "distance": "Dystans",
+    "spent": "Wydano",
+    "co2Saved": "Zaoszczędzone CO2"
   },
   "ride": {
     "duration": "Czas trwania",
     "distance": "Dystans",
     "cost": "Koszt",
-    "viewDetails": "Zobacz szczegóły"
+    "viewDetails": "Zobacz szczegóły",
+    "ridePrefix": "Jazda {{id}}",
+    "loading": "Ładowanie jazd...",
+    "loadingSingle": "Ładowanie jazdy...",
+    "notFound": "Nie znaleziono jazdy.",
+    "backToHistory": "Powrót do historii"
+  },
+  "table": {
+    "allRides": "Wszystkie jazdy",
+    "columns": {
+      "ride": "Jazda",
+      "scooter": "Hulajnoga",
+      "date": "Data",
+      "duration": "Czas",
+      "distance": "Dystans",
+      "cost": "Koszt",
+      "status": "Status"
+    },
+    "viewRideAria": "Zobacz jazdę {{id}}"
   },
   "detail": {
     "title": "Szczegóły jazdy",
     "route": "Trasa",
     "stats": "Statystyki",
-    "cost": "Podział kosztów",
-    "unlockFee": "Opłata startowa",
+    "cost": "Rozliczenie kosztów",
+    "unlockFee": "Opłata za odblokowanie",
     "perMinute": "Za minutę",
-    "total": "Razem"
+    "total": "Łącznie",
+    "totalCharged": "Łącznie pobrano",
+    "scooterPrefix": "Hulajnoga {{id}}",
+    "start": "Start",
+    "end": "Koniec",
+    "avgSpeed": "Śr. prędkość",
+    "scooter": "Hulajnoga",
+    "backAria": "Powrót do historii",
+    "headerTitle": "Jazda #{{id}}"
   }
 }

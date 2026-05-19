@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { Battery, MapPin } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Scooter } from '../../types';
 import ProgressBar, { batteryColor } from '../ui/ProgressBar';
 import { distanceFromUser, useScootersStore } from '../../stores/scootersStore';
@@ -11,9 +12,10 @@ interface ScooterListItemProps {
 }
 
 export default function ScooterListItem({ scooter, selected, onSelect }: ScooterListItemProps) {
+  const { t } = useTranslation('map');
   const userLocation = useScootersStore((s) => s.userLocation);
   const distanceLabel = distanceFromUser(scooter, userLocation);
-  const label = scooter.model || `Scooter ${scooter.scooter_id}`;
+  const label = scooter.model || t('scooterFallback', { id: scooter.scooter_id });
 
   return (
     <button
@@ -31,7 +33,7 @@ export default function ScooterListItem({ scooter, selected, onSelect }: Scooter
       <div className="flex items-center gap-3 text-xs text-slate-500">
         <span className="flex items-center gap-1"><Battery size={12} /> {scooter.battery_level}%</span>
         <span className="flex items-center gap-1"><MapPin size={12} /> {distanceLabel}</span>
-        <span className="text-slate-400 truncate">ID: {scooter.scooter_id}</span>
+        <span className="text-slate-400 truncate">{t('idPrefix')} {scooter.scooter_id}</span>
       </div>
       <ProgressBar value={scooter.battery_level} color={batteryColor(scooter.battery_level)} height="xs" className="mt-2" />
     </button>

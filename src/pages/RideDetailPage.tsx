@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useRideHistoryStore } from '../stores/rideHistoryStore';
 import { useAuthStore } from '../stores/authStore';
 import RideDetailHeader from '../components/sections/RideDetailHeader';
@@ -9,6 +10,7 @@ import RideDetailStats from '../components/sections/RideDetailStats';
 import RideDetailCostBreakdown from '../components/sections/RideDetailCostBreakdown';
 
 export default function RideDetailPage() {
+  const { t } = useTranslation('history');
   const { id } = useParams();
   const rides = useRideHistoryStore((s) => s.rides);
   const loading = useRideHistoryStore((s) => s.loading);
@@ -25,8 +27,8 @@ export default function RideDetailPage() {
   if (!ride) {
     return (
       <div className="p-4 sm:p-6 lg:p-8 max-w-2xl mx-auto">
-        <p className="text-sm text-slate-500">{loading ? 'Loading ride...' : 'Ride not found.'}</p>
-        <Link to="/history" className="text-sm text-primary hover:underline">Back to history</Link>
+        <p className="text-sm text-slate-500">{loading ? t('ride.loadingSingle') : t('ride.notFound')}</p>
+        <Link to="/history" className="text-sm text-primary hover:underline">{t('ride.backToHistory')}</Link>
       </div>
     );
   }

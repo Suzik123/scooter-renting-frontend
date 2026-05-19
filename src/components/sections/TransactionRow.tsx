@@ -1,5 +1,6 @@
 import { clsx } from 'clsx';
 import { ArrowUpRight, AlertCircle, Clock, RotateCcw } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import type { Payment } from '../../types';
 import { toNum, type DecimalLike } from '../../lib/decimal';
 
@@ -7,33 +8,33 @@ interface TransactionRowProps {
   payment: Payment;
 }
 
-function formatAmount(amount: DecimalLike, currency: string): string {
+function formatAmount(amount: DecimalLike, currency: string, locale: string): string {
   const n = toNum(amount);
   try {
-    return new Intl.NumberFormat('en-US', { style: 'currency', currency }).format(n);
+    return new Intl.NumberFormat(locale, { style: 'currency', currency }).format(n);
   } catch {
     return `${n.toFixed(2)} ${currency}`;
   }
 }
 
-function formatDate(iso: string): string {
+function formatDate(iso: string, locale: string): string {
   const d = new Date(iso);
   if (Number.isNaN(d.getTime())) return iso;
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-}
-
-function description(p: Payment): string {
-  if (p.rental_id) {
-    const id = p.rental_id.length > 8 ? p.rental_id.slice(0, 8) : p.rental_id;
-    return `Ride · ${id}`;
-  }
-  return 'Payment';
+  return d.toLocaleDateString(locale, { month: 'short', day: 'numeric', year: 'numeric' });
 }
 
 export default function TransactionRow({ payment }: TransactionRowProps) {
+  const { t, i18n } = useTranslation('wallet');
+  const locale = i18n.resolvedLanguage === 'pl' ? 'pl-PL' : 'en-US';
   const failed = payment.status === 'failed';
   const pending = payment.status === 'pending';
   const refunded = payment.status === 'refunded';
+
+  const description = payment.rental_id
+    ? t('transactions.ridePrefix', {
+        id: payment.rental_id.length > 8 ? payment.rental_id.slice(0, 8) : payment.rental_id,
+      })
+    : t('transactions.payment');
 
   return (
     <div className="flex items-center gap-3">
@@ -60,12 +61,12 @@ export default function TransactionRow({ payment }: TransactionRowProps) {
         )}
       </div>
       <div className="flex-1 min-w-0">
-        <p className="text-sm font-medium text-slate-900 truncate">{description(payment)}</p>
+        <p className="text-sm font-medium text-slate-900 truncate">{description}</p>
         <p className="text-xs text-slate-500">
-          {formatDate(payment.transaction_date)}
+          {formatDate(payment.transaction_date, locale)}
           {failed && payment.failure_reason ? ` · ${payment.failure_reason}` : ''}
-          {pending ? ' · pending' : ''}
-          {refunded ? ' · refunded' : ''}
+          {pending ? ` · ${t('transactions.pendingSuffix')}` : ''}
+          {refunded ? ` · ${t('transactions.refundedSuffix')}` : ''}
         </p>
       </div>
       <span
@@ -74,7 +75,7 @@ export default function TransactionRow({ payment }: TransactionRowProps) {
           failed ? 'text-red-600' : refunded ? 'text-blue-600' : 'text-slate-900',
         )}
       >
-        {formatAmount(payment.amount, payment.currency)}
+        {formatAmount(payment.amount, payment.currency, locale)}
       </span>
     </div>
   );

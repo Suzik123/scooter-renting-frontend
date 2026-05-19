@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AlertCircle, CreditCard, MapPinOff } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import MapSearchBar from '../components/sections/MapSearchBar';
 import MapFilterPills from '../components/sections/MapFilterPills';
 import BestMatchCard from '../components/sections/BestMatchCard';
@@ -24,6 +25,7 @@ function getPosition(): Promise<GeolocationPosition | null> {
 }
 
 export default function MapPage() {
+  const { t } = useTranslation('map');
   const loadScooters = useScootersStore((s) => s.loadScooters);
   const setGeoDenied = useScootersStore((s) => s.setGeoDenied);
   const geoDenied = useScootersStore((s) => s.geoDenied);
@@ -74,7 +76,7 @@ export default function MapPage() {
           <div className="m-4 p-3 rounded-xl border border-slate-200 bg-slate-50 flex items-start gap-2">
             <MapPinOff size={18} className="text-slate-500 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-slate-700">
-              Location off — showing all scooters.
+              {t('geoOff')}
             </div>
           </div>
         )}
@@ -82,11 +84,11 @@ export default function MapPage() {
           <div className="m-4 p-3 rounded-xl border border-red-200 bg-red-50 flex items-start gap-2">
             <AlertCircle size={18} className="text-red-500 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-red-700">
-              You have an unpaid ride.{' '}
+              {t('outstanding')}{' '}
               <Link to="/wallet" className="font-medium underline" onClick={clearFlags}>
-                Settle it in Wallet
+                {t('outstandingCta')}
               </Link>
-              {' '}before riding again.
+              {' '}{t('outstandingSuffix')}
             </div>
           </div>
         )}
@@ -94,7 +96,7 @@ export default function MapPage() {
           <div className="m-4 p-3 rounded-xl border border-amber-200 bg-amber-50 flex items-start gap-2">
             <CreditCard size={18} className="text-amber-600 flex-shrink-0 mt-0.5" />
             <div className="text-sm text-amber-800 flex-1">
-              Add a payment card to start riding.
+              {t('addCardBanner')}
               <button
                 type="button"
                 onClick={() => {
@@ -104,7 +106,7 @@ export default function MapPage() {
                 }}
                 className="ml-2 font-medium underline cursor-pointer"
               >
-                Add card
+                {t('addCardCta')}
               </button>
             </div>
           </div>

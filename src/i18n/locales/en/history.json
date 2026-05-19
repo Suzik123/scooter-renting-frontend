@@ -3,24 +3,56 @@
   "filters": {
     "all": "All",
     "thisWeek": "This Week",
+    "lastWeek": "Last Week",
     "thisMonth": "This Month",
-    "thisYear": "This Year"
+    "thisYear": "This Year",
+    "ariaLabel": "Ride filter"
+  },
+  "groups": {
+    "Today": "Today",
+    "Yesterday": "Yesterday",
+    "This Week": "This Week",
+    "Last Week": "Last Week",
+    "This Month": "This Month",
+    "Older": "Older"
   },
   "empty": {
     "title": "No rides yet",
-    "subtitle": "Your completed rides will appear here"
+    "subtitle": "Your completed rides will appear here",
+    "noMatch": "No rides match this filter."
   },
   "stats": {
     "totalRides": "Total Rides",
     "totalDistance": "Total Distance",
     "totalSpent": "Total Spent",
-    "totalMinutes": "Total Minutes"
+    "totalMinutes": "Total Minutes",
+    "distance": "Distance",
+    "spent": "Spent",
+    "co2Saved": "CO2 Saved"
   },
   "ride": {
     "duration": "Duration",
     "distance": "Distance",
     "cost": "Cost",
-    "viewDetails": "View details"
+    "viewDetails": "View details",
+    "ridePrefix": "Ride {{id}}",
+    "loading": "Loading rides...",
+    "loadingSingle": "Loading ride...",
+    "notFound": "Ride not found.",
+    "backToHistory": "Back to history"
+  },
+  "table": {
+    "allRides": "All Rides",
+    "columns": {
+      "ride": "Ride",
+      "scooter": "Scooter",
+      "date": "Date",
+      "duration": "Duration",
+      "distance": "Distance",
+      "cost": "Cost",
+      "status": "Status"
+    },
+    "viewRideAria": "View ride {{id}}"
   },
   "detail": {
     "title": "Ride Details",
@@ -29,6 +61,14 @@
     "cost": "Cost Breakdown",
     "unlockFee": "Unlock Fee",
     "perMinute": "Per Minute",
-    "total": "Total"
+    "total": "Total",
+    "totalCharged": "Total Charged",
+    "scooterPrefix": "Scooter {{id}}",
+    "start": "Start",
+    "end": "End",
+    "avgSpeed": "Avg Speed",
+    "scooter": "Scooter",
+    "backAria": "Back to history",
+    "headerTitle": "Ride #{{id}}"
   }
 }

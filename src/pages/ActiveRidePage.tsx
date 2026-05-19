@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Badge from '../components/ui/Badge';
 import Button from '../components/ui/Button';
 import RideTimerCard from '../components/sections/RideTimerCard';
@@ -8,6 +9,7 @@ import { useActiveRideStore } from '../stores/activeRideStore';
 import { useUIStore } from '../stores/uiStore';
 
 export default function ActiveRidePage() {
+  const { t } = useTranslation('ride');
   const ride = useActiveRideStore((s) => s.activeRide);
   const endRide = useActiveRideStore((s) => s.endRide);
   const loading = useActiveRideStore((s) => s.loading);
@@ -28,10 +30,10 @@ export default function ActiveRidePage() {
   const handleEndRide = async () => {
     const result = await endRide();
     if (result) {
-      showToast('Ride ended', 'success');
+      showToast(t('active.endedToast'), 'success');
       navigate('/ride/complete');
     } else {
-      showToast(error ?? 'Failed to end ride', 'error');
+      showToast(error ?? t('active.endFailedToast'), 'error');
     }
   };
 
@@ -40,9 +42,9 @@ export default function ActiveRidePage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <Badge variant="success" className="animate-pulse text-sm px-4 py-1.5">
-            RIDE ACTIVE
+            {t('active.badge')}
           </Badge>
-          <span className="text-xs text-[var(--color-text-muted)]">Scooter {ride.scooter_id}</span>
+          <span className="text-xs text-[var(--color-text-muted)]">{t('active.scooterPrefix', { id: ride.scooter_id })}</span>
         </div>
 
         <RideTimerCard />
@@ -56,7 +58,7 @@ export default function ActiveRidePage() {
           onClick={handleEndRide}
           disabled={loading}
         >
-          {loading ? 'Ending...' : 'End Ride'}
+          {loading ? t('active.ending') : t('active.endRide')}
         </Button>
       </div>
     </div>

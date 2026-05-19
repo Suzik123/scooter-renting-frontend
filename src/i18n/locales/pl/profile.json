@@ -4,12 +4,18 @@
   "loggingOut": "Wylogowywanie...",
   "ecoImpact": {
     "title": "Wpływ ekologiczny",
-    "co2Saved": "Zaoszczędzone CO₂",
+    "co2Saved": "Zaoszczędzone CO2",
+    "greenRides": "Ekologiczne jazdy",
     "trees": "Równowartość {{count}} drzew"
   },
   "favorite": {
     "title": "Ulubiona hulajnoga",
-    "empty": "Wykonaj więcej jazd, aby odkryć ulubioną"
+    "empty": "Brak ulubionej"
+  },
+  "activePlan": {
+    "label": "Aktywny plan",
+    "payAsYouGo": "Płać za przejazd",
+    "comingSoon": "Minuty planu — wkrótce"
   },
   "settings": {
     "account": "Ustawienia konta",

@@ -11,7 +11,10 @@
     "continue": "Continue",
     "retry": "Try again",
     "loading": "Loading...",
-    "pleaseWait": "Please wait..."
+    "pleaseWait": "Please wait...",
+    "add": "Add",
+    "remove": "Remove",
+    "viewAll": "View all"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -42,5 +45,23 @@
   },
   "currency": {
     "format": "{{amount}} {{currency}}"
+  },
+  "help": {
+    "title": "Need Help?",
+    "subtitle": "Our support team is here 24/7",
+    "cta": "Start Chat"
+  },
+  "status": {
+    "completed": "Completed",
+    "in_progress": "In progress",
+    "active": "Active",
+    "cancelled": "Cancelled",
+    "paid": "Paid",
+    "confirming": "Confirming...",
+    "failed": "Failed",
+    "pending": "Pending",
+    "refunded": "Refunded",
+    "default": "Default",
+    "success": "Success"
   }
 }

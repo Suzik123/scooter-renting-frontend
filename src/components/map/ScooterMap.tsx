@@ -40,15 +40,29 @@ function makeScooterIcon(opts: { selected: boolean; available: boolean }): L.Div
   });
 }
 
-function zoneColor(zoneType: string): { color: string; fillColor: string; fillOpacity: number } {
+type ZonePaint = {
+  color: string;
+  fillColor: string;
+  fillOpacity: number;
+  weight: number;
+  dashArray?: string;
+};
+
+function zoneColor(zoneType: string): ZonePaint {
   switch (zoneType) {
     case 'no_park':
     case 'no_parking':
-      return { color: '#EF4444', fillColor: '#EF4444', fillOpacity: 0.1 };
+      return { color: '#EF4444', fillColor: '#EF4444', fillOpacity: 0.12, weight: 2 };
     case 'restricted':
-      return { color: '#F59E0B', fillColor: '#F59E0B', fillOpacity: 0.08 };
+      return { color: '#F59E0B', fillColor: '#F59E0B', fillOpacity: 0.10, weight: 2 };
+    case 'reduced_speed':
+      return { color: '#F59E0B', fillColor: '#F59E0B', fillOpacity: 0.08, weight: 2, dashArray: '6,4' };
+    case 'service':
+      // Operating area — faint dashed boundary so it doesn't visually
+      // collide with smaller rule zones rendered on top of it.
+      return { color: '#22C55E', fillColor: '#22C55E', fillOpacity: 0.04, weight: 1, dashArray: '4,6' };
     default:
-      return { color: '#22C55E', fillColor: '#22C55E', fillOpacity: 0.06 };
+      return { color: '#22C55E', fillColor: '#22C55E', fillOpacity: 0.06, weight: 2 };
   }
 }
 

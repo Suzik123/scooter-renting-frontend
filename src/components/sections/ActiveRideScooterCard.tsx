@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useActiveRideStore } from '../../stores/activeRideStore';
 import ProgressBar from '../ui/ProgressBar';
 
@@ -5,6 +6,7 @@ import ProgressBar from '../ui/ProgressBar';
 // shown there was guessed and confusing. Re-introduce only once live telemetry
 // lands on the backend.
 export default function ActiveRideScooterCard() {
+  const { t } = useTranslation('ride');
   const ride = useActiveRideStore((s) => s.activeRide);
 
   if (!ride) return null;
@@ -18,7 +20,7 @@ export default function ActiveRideScooterCard() {
         </div>
         <div className="text-right">
           <p className="text-sm font-semibold text-[var(--color-text-primary)]">{ride.battery_level}%</p>
-          <p className="text-xs text-[var(--color-text-muted)]">Battery</p>
+          <p className="text-xs text-[var(--color-text-muted)]">{t('active.battery')}</p>
         </div>
       </div>
       <ProgressBar value={ride.battery_level} height="md" />

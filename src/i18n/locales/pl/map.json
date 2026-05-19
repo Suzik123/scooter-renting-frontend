@@ -22,6 +22,8 @@
   "selectScooter": "Wybierz hulajnogę",
   "scootersNearby": "{{count}} hulajnóg w pobliżu",
   "available": "Dostępna",
+  "scooterFallback": "Hulajnoga {{id}}",
+  "idPrefix": "ID:",
   "unlock": "Odblokuj i jedź",
   "unlocking": "Odblokowywanie...",
   "addCardToRide": "Dodaj kartę, aby jeździć",
