@@ -7,6 +7,7 @@ import Button from '../ui/Button';
 import { useAuthStore } from '../../stores/authStore';
 import { useRideHistoryStore } from '../../stores/rideHistoryStore';
 import { toNum } from '../../lib/decimal';
+import EditProfileModal from './EditProfileModal';
 
 function getInitials(firstName?: string, lastName?: string): string {
   const f = (firstName ?? '').trim()[0] ?? '';
@@ -28,6 +29,7 @@ export default function ProfileHeaderCard() {
   const rides = useRideHistoryStore((s) => s.rides);
   const navigate = useNavigate();
   const [loggingOut, setLoggingOut] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
 
   const handleLogout = async () => {
     if (loggingOut) return;
@@ -81,7 +83,9 @@ export default function ProfileHeaderCard() {
       </div>
 
       <div className="mt-4 space-y-2">
-        <Button fullWidth variant="outline">Edit Profile</Button>
+        <Button fullWidth variant="outline" onClick={() => setEditOpen(true)}>
+          {t('profile:editProfile.cta')}
+        </Button>
         <Button
           fullWidth
           variant="ghost"
@@ -92,6 +96,8 @@ export default function ProfileHeaderCard() {
           <LogOut size={16} className="mr-2" /> {loggingOut ? t('profile:loggingOut') : t('profile:logout')}
         </Button>
       </div>
+
+      <EditProfileModal open={editOpen} onClose={() => setEditOpen(false)} />
     </div>
   );
 }

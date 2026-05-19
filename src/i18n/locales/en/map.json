@@ -19,6 +19,7 @@
   "addCardBanner": "Add a payment card to start riding.",
   "addCardCta": "Add card",
   "recenter": "Re-center map",
+  "locationDenied": "Location permission denied",
   "selectScooter": "Select scooter",
   "scootersNearby": "{{count}} scooters nearby",
   "available": "Available",

@@ -12,6 +12,13 @@
     "title": "Ulubiona hulajnoga",
     "empty": "Brak ulubionej"
   },
+  "editProfile": {
+    "cta": "Edytuj profil",
+    "title": "Edytuj profil",
+    "saved": "Profil zaktualizowany",
+    "saveFailed": "Nie udało się zapisać profilu",
+    "emailReadOnly": "Adresu e-mail nie można jeszcze zmienić."
+  },
   "activePlan": {
     "label": "Aktywny plan",
     "payAsYouGo": "Płać za przejazd",

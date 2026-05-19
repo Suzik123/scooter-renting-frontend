@@ -19,6 +19,7 @@
   "addCardBanner": "Dodaj kartę płatniczą, aby rozpocząć jazdę.",
   "addCardCta": "Dodaj kartę",
   "recenter": "Wyśrodkuj mapę",
+  "locationDenied": "Brak zezwolenia na lokalizację",
   "selectScooter": "Wybierz hulajnogę",
   "scootersNearby": "{{count}} hulajnóg w pobliżu",
   "available": "Dostępna",

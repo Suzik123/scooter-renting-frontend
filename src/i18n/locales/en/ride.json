@@ -34,6 +34,9 @@
     "backToMap": "Back to map",
     "ridePrefix": "Ride {{id}}"
   },
+  "reconciled": {
+    "serverEnded": "Your previous ride was ended on the server."
+  },
   "confirm": {
     "title": "End ride?",
     "subtitle": "Are you sure you want to end this ride?",

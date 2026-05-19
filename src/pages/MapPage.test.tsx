@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders, i18n } from '../test/utils';
 import MapPage from './MapPage';
 import { useScootersStore } from '../stores/scootersStore';
@@ -53,5 +54,13 @@ describe('MapPage', () => {
   it('shows the recenter button', () => {
     renderWithProviders(<MapPage />);
     expect(screen.getByRole('button', { name: /re-center map/i })).toBeInTheDocument();
+  });
+
+  it('calls requestRecenter when the recenter button is clicked', async () => {
+    const user = userEvent.setup();
+    const spy = vi.spyOn(useScootersStore.getState(), 'requestRecenter');
+    renderWithProviders(<MapPage />);
+    await user.click(screen.getByRole('button', { name: /re-center map/i }));
+    expect(spy).toHaveBeenCalled();
   });
 });

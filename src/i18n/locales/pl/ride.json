@@ -34,6 +34,9 @@
     "backToMap": "Powrót do mapy",
     "ridePrefix": "Jazda {{id}}"
   },
+  "reconciled": {
+    "serverEnded": "Twoja poprzednia jazda została zakończona po stronie serwera."
+  },
   "confirm": {
     "title": "Zakończyć jazdę?",
     "subtitle": "Czy na pewno chcesz zakończyć tę jazdę?",

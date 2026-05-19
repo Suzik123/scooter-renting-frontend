@@ -3,6 +3,8 @@ import { persist } from 'zustand/middleware';
 import type { Scooter, Rental, PaymentResult } from '../types';
 import * as rentalsApi from '../api/rentals';
 import { isApiError } from '../api/errors';
+import i18n from '../i18n';
+import { useUIStore } from './uiStore';
 
 export interface ActiveRide {
   rental_id: string;
@@ -35,6 +37,7 @@ interface ActiveRideState {
   clearFlags: () => void;
   clearFinished: () => void;
   cancelRide: () => void;
+  reconcile: () => Promise<void>;
   _tick: () => void;
 }
 
@@ -175,16 +178,54 @@ export const useActiveRideStore = create<ActiveRideState>()(
         stopTicker();
         set({ activeRide: null, elapsedSeconds: 0, currentCost: 0 });
       },
+      reconcile: async () => {
+        const ride = get().activeRide;
+        if (!ride) return;
+        try {
+          const rental = await rentalsApi.getRental(ride.rental_id);
+          if (rental.status !== 'active') {
+            stopTicker();
+            set({ activeRide: null, elapsedSeconds: 0, currentCost: 0 });
+            useUIStore.getState().showToast(
+              i18n.t('ride:reconciled.serverEnded', {
+                defaultValue: 'Your previous ride was ended on the server.',
+              }),
+              'info',
+            );
+          }
+        } catch (e) {
+          if (isApiError(e)) {
+            if (e.status === 404) {
+              // Rental no longer exists — same outcome as completed.
+              stopTicker();
+              set({ activeRide: null, elapsedSeconds: 0, currentCost: 0 });
+              useUIStore.getState().showToast(
+                i18n.t('ride:reconciled.serverEnded', {
+                  defaultValue: 'Your previous ride was ended on the server.',
+                }),
+                'info',
+              );
+              return;
+            }
+            // 401 → global interceptor logs the user out; everything else
+            // (network, 5xx) → keep state, try again next boot.
+          }
+          // Best-effort, silent on network errors.
+        }
+      },
     }),
     {
       name: 'uniscoot-active-ride',
       partialize: (s) => ({ activeRide: s.activeRide }),
       onRehydrateStorage: () => (state) => {
         if (state?.activeRide) {
+          // Optimistically resume the timer for instant UI, then verify with
+          // the server. The reconcile is best-effort and silent on errors.
           const elapsed = Math.floor((Date.now() - state.activeRide.startedAtMs) / 1000);
           state.elapsedSeconds = elapsed;
           state.currentCost = computeCost(elapsed, state.activeRide);
           ensureTicker();
+          void useActiveRideStore.getState().reconcile();
         }
       },
     },

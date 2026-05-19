@@ -159,9 +159,12 @@ export default function LoginForm() {
               <label htmlFor="password" className="block text-sm font-medium text-[var(--color-text-secondary)]">
                 {t('auth:fields.password')}
               </label>
-              <button type="button" className="text-xs text-primary hover:text-primary-dark cursor-pointer">
+              <Link
+                to="/password-reset"
+                className="text-xs text-primary hover:text-primary-dark cursor-pointer"
+              >
                 {t('auth:fields.forgotPassword')}
-              </button>
+              </Link>
             </div>
             <PasswordField
               id="password"

@@ -54,6 +54,34 @@ export const handlers = [
     return new HttpResponse(null, { status: 204 });
   }),
 
+  http.post(`${BASE}/api/auth/password-reset/request`, async ({ request }) => {
+    const body = (await request.json()) as { email?: string };
+    if (!body.email) {
+      return HttpResponse.json(
+        { error: { kind: 'invalid', message: 'email required' } },
+        { status: 400 },
+      );
+    }
+    return new HttpResponse(null, { status: 204 });
+  }),
+
+  http.post(`${BASE}/api/auth/password-reset/confirm`, async ({ request }) => {
+    const body = (await request.json()) as { token?: string; new_password?: string };
+    if (!body.token || !body.new_password) {
+      return HttpResponse.json(
+        { error: { kind: 'invalid', message: 'token and new_password required' } },
+        { status: 400 },
+      );
+    }
+    if (body.token === 'expired') {
+      return HttpResponse.json(
+        { error: { kind: 'invalid_token', message: 'expired' } },
+        { status: 401 },
+      );
+    }
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   http.get(`${BASE}/api/scooters/nearby`, () => {
     return HttpResponse.json({ data: { items: mockScooters, total: mockScooters.length } });
   }),

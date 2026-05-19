@@ -9,6 +9,8 @@ import RouteFallback from './components/ui/RouteFallback';
 import { useTheme } from './hooks/useTheme';
 import { setAuthExpiredHandler, setToastHandler } from './api/client';
 import { useUIStore } from './stores/uiStore';
+import { useAuthStore } from './stores/authStore';
+import { useActiveRideStore } from './stores/activeRideStore';
 
 // Lazy-load every authed route — Landing + Login stay eager for fastest FCP.
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -21,6 +23,8 @@ const ActiveRidePage = lazy(() => import('./pages/ActiveRidePage'));
 const RideCompletePage = lazy(() => import('./pages/RideCompletePage'));
 const OfflinePaymentsPage = lazy(() => import('./pages/admin/OfflinePaymentsPage'));
 const LegalPage = lazy(() => import('./pages/LegalPage'));
+const PasswordResetRequestPage = lazy(() => import('./pages/PasswordResetRequestPage'));
+const PasswordResetConfirmPage = lazy(() => import('./pages/PasswordResetConfirmPage'));
 
 export default function App() {
   useTheme();
@@ -36,12 +40,34 @@ export default function App() {
     };
   }, [navigate, showToast]);
 
+  // Reconcile any persisted active ride with the server once after auth has
+  // rehydrated. The store also reconciles inside onRehydrateStorage but at
+  // boot time the auth token may not be in localStorage yet — this rerun
+  // ensures the request goes out with the Authorization header attached.
+  useEffect(() => {
+    const run = () => {
+      if (useAuthStore.getState().isAuthenticated) {
+        void useActiveRideStore.getState().reconcile();
+      }
+    };
+    if (useAuthStore.persist.hasHydrated()) {
+      run();
+      return;
+    }
+    const unsub = useAuthStore.persist.onFinishHydration(run);
+    return () => {
+      unsub();
+    };
+  }, []);
+
   return (
     <Suspense fallback={<RouteFallback />}>
       <Routes>
         {/* No layout */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/password-reset" element={<PasswordResetRequestPage />} />
+        <Route path="/reset-password" element={<PasswordResetConfirmPage />} />
         <Route path="/legal/privacy" element={<LegalPage kind="privacy" />} />
         <Route path="/legal/terms" element={<LegalPage kind="terms" />} />
         <Route path="/legal/cookies" element={<LegalPage kind="cookies" />} />

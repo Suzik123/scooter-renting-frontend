@@ -16,6 +16,8 @@ interface ScooterMapProps {
   className?: string;
   zoom?: number;
   followUser?: boolean;
+  /** Increment to trigger an imperative recenter to `userLocation`. */
+  recenterKey?: number;
   showZones?: boolean;
 }
 
@@ -76,6 +78,7 @@ export default function ScooterMap({
   className,
   zoom = DEFAULT_ZOOM,
   followUser = false,
+  recenterKey,
   showZones = true,
 }: ScooterMapProps) {
   const effectiveCenter: [number, number] = useMemo(() => {
@@ -137,7 +140,7 @@ export default function ScooterMap({
           keepBuffer={1}
           updateWhenZooming={false}
         />
-        <MapRecenter center={userLocation ?? null} follow={followUser} />
+        <MapRecenter center={userLocation ?? null} follow={followUser} recenterKey={recenterKey} />
         {showZones &&
           uniqueZones.map((z) => (
             <Circle

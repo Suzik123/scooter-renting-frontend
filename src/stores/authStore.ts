@@ -15,6 +15,7 @@ interface AuthState {
   loginWithGoogle: (idToken: string) => Promise<void>;
   logout: () => Promise<void>;
   clearError: () => void;
+  setUser: (user: User) => void;
 }
 
 function toErrorMessage(e: unknown, fallback: string): string {
@@ -78,6 +79,7 @@ export const useAuthStore = create<AuthState>()(
         set({ user: null, token: null, isAuthenticated: false, error: null, loading: false });
       },
       clearError: () => set({ error: null }),
+      setUser: (user) => set({ user }),
     }),
     {
       name: 'uniscoot-auth',

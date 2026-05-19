@@ -12,6 +12,13 @@
     "title": "Favorite Scooter",
     "empty": "No favorite yet"
   },
+  "editProfile": {
+    "cta": "Edit Profile",
+    "title": "Edit Profile",
+    "saved": "Profile updated",
+    "saveFailed": "Could not save your profile",
+    "emailReadOnly": "Email cannot be changed yet."
+  },
   "activePlan": {
     "label": "Active Plan",
     "payAsYouGo": "Pay-as-you-go",

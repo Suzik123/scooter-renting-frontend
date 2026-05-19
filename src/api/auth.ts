@@ -38,3 +38,30 @@ export function oauthGoogle(idToken: string): Promise<AuthResponse> {
 export function logout(): Promise<void> {
   return request<void>('/api/auth/logout', { method: 'POST', noRetry: true });
 }
+
+export interface PasswordResetRequestPayload {
+  email: string;
+}
+
+export function requestPasswordReset(payload: PasswordResetRequestPayload): Promise<void> {
+  return request<void>('/api/auth/password-reset/request', {
+    method: 'POST',
+    body: payload,
+    auth: false,
+    noRetry: true,
+  });
+}
+
+export interface PasswordResetConfirmPayload {
+  token: string;
+  new_password: string;
+}
+
+export function confirmPasswordReset(payload: PasswordResetConfirmPayload): Promise<void> {
+  return request<void>('/api/auth/password-reset/confirm', {
+    method: 'POST',
+    body: payload,
+    auth: false,
+    noRetry: true,
+  });
+}

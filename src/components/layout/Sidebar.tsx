@@ -73,14 +73,14 @@ export default function Sidebar() {
       <div className="mx-3 mb-4 p-4 bg-primary-light rounded-xl">
         <div className="flex items-center gap-2 mb-2">
           <MessageCircle size={18} className="text-primary" />
-          <span className="text-sm font-semibold text-slate-900">Need Help?</span>
+          <span className="text-sm font-semibold text-slate-900">{t('help.title')}</span>
         </div>
-        <p className="text-xs text-slate-700 mb-3">Our support team is here 24/7</p>
+        <p className="text-xs text-slate-700 mb-3">{t('help.subtitle')}</p>
         <button
           type="button"
           className="w-full bg-primary text-white text-xs font-medium py-2 rounded-lg hover:bg-primary-dark transition-colors cursor-pointer"
         >
-          Start Chat
+          {t('help.cta')}
         </button>
       </div>
     </aside>
